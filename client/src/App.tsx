@@ -7,10 +7,23 @@ import Explore from "./pages/Explore";
 function App() {
 	const isAuthenticated = true;
 	const [search, setSearch] = useState("");
+	const [results, setResults] = useState(false);
 
 	function handleSearch(event?: ChangeEvent<HTMLInputElement>) {
-		if (event) setSearch(event.target.value);
-		else setSearch("");
+		if (event) {
+			const value = event.target.value;
+			setSearch(value);
+			if (!value) {
+				setResults(false);
+			}
+		} else {
+			setSearch("");
+			setResults(false);
+		}
+	}
+
+	function showResults() {
+		setResults(true);
 	}
 
 	return (
@@ -25,6 +38,7 @@ function App() {
 								isAuthenticated={isAuthenticated}
 								search={search}
 								handleSearch={handleSearch}
+								showResults={showResults}
 							/>
 						}
 					/>
@@ -34,6 +48,8 @@ function App() {
 							<Explore
 								search={search}
 								handleSearch={handleSearch}
+								results={results}
+								showResults={showResults}
 							/>
 						}
 					/>
