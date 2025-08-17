@@ -52,8 +52,8 @@ const books = [
 
 export default function BookCarousel({ title }: { title: string }) {
 	return (
-		<div className="flex flex-col gap-3">
-			<span className="font-semibold text-xl pl-2">{title}</span>
+		<div className="flex flex-col gap-2">
+			<span className="font-semibold text-xl pl-3">{title}</span>
 			<PerfectScrollbar options={{ suppressScrollY: true }}>
 				<div className="grid grid-flow-col auto-cols-min pb-2 px-1 relative">
 					{books.map((book, index) => (

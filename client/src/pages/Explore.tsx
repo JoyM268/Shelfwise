@@ -21,6 +21,7 @@ const genres = [
 	{ name: "Horror", src: "horror" },
 	{ name: "Historical Fiction", src: "historical fiction" },
 	{ name: "Young Adult", src: "young adult" },
+	{ name: "Children's Fiction", src: "childrens fiction" },
 	{ name: "Non-Fiction", src: "nonfiction" },
 	{ name: "Biography", src: "biography" },
 	{ name: "History", src: "history" },
