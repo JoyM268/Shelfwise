@@ -2,17 +2,23 @@ import { useState } from "react";
 import type { MouseEvent } from "react";
 import { clsx } from "clsx";
 import Book from "../components/Book";
+import EmptyMessage from "@/components/EmptyMessage";
+import { toast } from "sonner";
 
-const bookData: {
+export type BookStatus = "Reading" | "Plan to Read" | "Finished";
+
+interface BookDataProps {
 	id: number;
 	src: string;
 	title: string;
 	authors: string[];
-	status: "Reading" | "Plan to Read" | "Finished";
+	status: BookStatus;
 	progress: number;
 	total: number;
 	description: string;
-}[] = [
+}
+
+const bookData: BookDataProps[] = [
 	{
 		id: 1,
 		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
@@ -48,11 +54,9 @@ const bookData: {
 export default function Library() {
 	const [section, setSection] = useState("All Books");
 	const [books, setBooks] = useState(bookData);
+	const count: [number, number, number] = [0, 0, 0];
 
-	function changeStatus(
-		id: number,
-		status: "Reading" | "Plan to Read" | "Finished"
-	) {
+	function changeStatus(id: number, status: BookStatus) {
 		const newBooks = books.map((book) => {
 			if (book.id === id) {
 				return {
@@ -63,6 +67,7 @@ export default function Library() {
 			return book;
 		});
 		setBooks(newBooks);
+		toast(`The book has been added to '${status}'`);
 	}
 
 	function handleSectionClick(event: MouseEvent<HTMLDivElement>) {
@@ -128,6 +133,14 @@ export default function Library() {
 					</div>
 					<div className="mt-4 flex gap-2 flex-wrap">
 						{books.map((book) => {
+							if (book.status === "Plan to Read") {
+								count[0]++;
+							} else if (book.status === "Reading") {
+								count[1]++;
+							} else {
+								count[2]++;
+							}
+
 							if (
 								section === "All Books" ||
 								section === book.status
@@ -146,6 +159,36 @@ export default function Library() {
 								);
 							}
 						})}
+
+						{section === "All Books" &&
+							count[0] + count[1] + count[2] === 0 && (
+								<EmptyMessage
+									title="Your Library is Empty"
+									description="Start adding books to track your reading progress and
+					discover new favorites"
+								/>
+							)}
+
+						{section === "Plan to Read" && count[0] === 0 && (
+							<EmptyMessage
+								title="Your Next Adventure Awaits"
+								description="Start Exploring to find and save books you're excited to read next."
+							/>
+						)}
+
+						{section === "Reading" && count[1] === 0 && (
+							<EmptyMessage
+								title="You Are Not Reading Any Books Currently"
+								description="Explore thousands of titles and choose a book to start reading today."
+							/>
+						)}
+
+						{section === "Finished" && count[2] === 0 && (
+							<EmptyMessage
+								title="You Have Not Completed Any Book Yet."
+								description="Every book you complete will appear here. Mark a book as 'finished' to add it to your accomplishments."
+							/>
+						)}
 					</div>
 				</div>
 			</div>

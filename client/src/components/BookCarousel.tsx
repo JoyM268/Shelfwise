@@ -59,7 +59,11 @@ const books = [
 	},
 ];
 
-export default function BookCarousel({ title }: { title: string }) {
+interface BookCarouselProps {
+	title: string;
+}
+
+export default function BookCarousel({ title }: BookCarouselProps) {
 	return (
 		<div className="flex flex-col gap-2">
 			<span className="font-semibold text-xl pl-3">{title}</span>

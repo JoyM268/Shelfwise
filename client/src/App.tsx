@@ -4,11 +4,14 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Explore from "./pages/Explore";
 import Library from "./pages/Library";
+import BookDetails from "./pages/BookDetails";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
 	const isAuthenticated = true;
 	const [search, setSearch] = useState("");
 	const [results, setResults] = useState(false);
+	const [menu, setMenu] = useState(false);
 
 	function handleSearch(event?: ChangeEvent<HTMLInputElement>) {
 		if (event) {
@@ -30,7 +33,17 @@ function App() {
 	return (
 		<BrowserRouter>
 			<div className="relative bg-white">
-				<Header isAuthenticated={isAuthenticated} />
+				<Header
+					isAuthenticated={isAuthenticated}
+					menu={menu}
+					setMenu={setMenu}
+				/>
+				<Toaster
+					position="top-center"
+					toastOptions={{
+						duration: 1500,
+					}}
+				/>
 				<div className="pt-20 h-screen">
 					<Routes>
 						<Route
@@ -56,6 +69,7 @@ function App() {
 							}
 						/>
 						<Route path="/library" element={<Library />} />
+						<Route path="/book/:id" element={<BookDetails />} />
 					</Routes>
 				</div>
 			</div>

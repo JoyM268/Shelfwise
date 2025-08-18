@@ -73,7 +73,7 @@ export default function Explore({
 					</motion.div>
 				)}
 			</AnimatePresence>
-			<div className="mt-1 sm:mt-7">
+			<div className="mt-6 sm:mt-7">
 				<span className="font-semibold text-xl pl-2">
 					Explore by Genre
 				</span>

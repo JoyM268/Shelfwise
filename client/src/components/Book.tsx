@@ -1,13 +1,5 @@
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuRadioGroup,
-	DropdownMenuRadioItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+import StatusDropdownMenu from "./StatusDropdownMenu";
+import type { BookStatus } from "@/pages/Library";
 
 interface BookProps {
 	id: number;
@@ -15,11 +7,8 @@ interface BookProps {
 	title: string;
 	authors: string[];
 	progress?: number;
-	status?: "Reading" | "Plan to Read" | "Finished";
-	changeStatus?: (
-		id: number,
-		status: "Reading" | "Plan to Read" | "Finished"
-	) => void;
+	status?: BookStatus;
+	changeStatus?: (id: number, status: BookStatus) => void;
 	handleBookRemove?: (id: number) => void;
 }
 
@@ -36,52 +25,15 @@ export default function Book({
 		.map((author) => author.split(" ")[0])
 		.join(", ");
 
-	function handleStatusChange(newStatus: string) {
-		if (
-			status !== newStatus &&
-			changeStatus &&
-			(newStatus === "Reading" ||
-				newStatus === "Plan to Read" ||
-				newStatus === "Finished")
-		)
-			changeStatus(id, newStatus);
-	}
-
 	return (
 		<div className="flex flex-col w-36 sm:w-40 text-wrap px-2 pt-2 pb-4 relative">
-			{status && (
-				<DropdownMenu>
-					<DropdownMenuTrigger>
-						<div className="bg-gray-100 py-0.5 absolute right-3 top-3 z-20 cursor-pointer rounded-md flex justify-center items-center shadow">
-							<MoreVertIcon />
-						</div>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent className="mt-8">
-						<DropdownMenuRadioGroup
-							value={status}
-							onValueChange={handleStatusChange}
-						>
-							<DropdownMenuRadioItem value="Plan to Read">
-								Plan to Read
-							</DropdownMenuRadioItem>
-							<DropdownMenuRadioItem value="Reading">
-								Reading
-							</DropdownMenuRadioItem>
-							<DropdownMenuRadioItem value="Finished">
-								Finished
-							</DropdownMenuRadioItem>
-						</DropdownMenuRadioGroup>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem
-							className="flex justify-center text-red-600"
-							onClick={() => {
-								if (handleBookRemove) handleBookRemove(id);
-							}}
-						>
-							Remove
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
+			{status && changeStatus && handleBookRemove && (
+				<StatusDropdownMenu
+					id={id}
+					status={status}
+					changeStatus={changeStatus}
+					handleBookRemove={handleBookRemove}
+				/>
 			)}
 			<img
 				src={src}
