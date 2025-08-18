@@ -27,7 +27,7 @@ export default function Home({
 	}
 
 	return (
-		<div className="h-screen pt-20 p-6 mx-auto flex items-center flex-col flex-1 max-w-[1350px] gap-4">
+		<div className="px-6 pb-6 mx-auto flex items-center flex-col flex-1 max-w-[1350px] gap-4">
 			<div
 				className="rounded-xl sm:max-w-11/12 max-h-fit shadow text-center py-16 px-9 flex flex-col items-center gap-4 sm:gap-6 bg-no-repeat bg-center bg-cover text-white relative select-none mt-3"
 				style={{

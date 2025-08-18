@@ -56,7 +56,7 @@ export default function Explore({
 	}
 
 	return (
-		<div className="h-screen pt-24 p-6 w-full max-w-[1300px] mx-auto">
+		<div className="px-6 pb-6 pt-5 w-full max-w-[1300px] mx-auto">
 			<form onSubmit={handleSubmit}>
 				<Search search={search} handleSearch={handleSearch} />
 			</form>

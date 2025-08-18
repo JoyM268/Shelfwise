@@ -3,6 +3,7 @@ import { useState, type ChangeEvent } from "react";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Explore from "./pages/Explore";
+import Library from "./pages/Library";
 
 function App() {
 	const isAuthenticated = true;
@@ -30,30 +31,33 @@ function App() {
 		<BrowserRouter>
 			<div className="relative bg-white">
 				<Header isAuthenticated={isAuthenticated} />
-				<Routes>
-					<Route
-						path="/"
-						element={
-							<Home
-								isAuthenticated={isAuthenticated}
-								search={search}
-								handleSearch={handleSearch}
-								showResults={showResults}
-							/>
-						}
-					/>
-					<Route
-						path="/explore"
-						element={
-							<Explore
-								search={search}
-								handleSearch={handleSearch}
-								results={results}
-								showResults={showResults}
-							/>
-						}
-					/>
-				</Routes>
+				<div className="pt-20 h-screen">
+					<Routes>
+						<Route
+							path="/"
+							element={
+								<Home
+									isAuthenticated={isAuthenticated}
+									search={search}
+									handleSearch={handleSearch}
+									showResults={showResults}
+								/>
+							}
+						/>
+						<Route
+							path="/explore"
+							element={
+								<Explore
+									search={search}
+									handleSearch={handleSearch}
+									results={results}
+									showResults={showResults}
+								/>
+							}
+						/>
+						<Route path="/library" element={<Library />} />
+					</Routes>
+				</div>
 			</div>
 		</BrowserRouter>
 	);
