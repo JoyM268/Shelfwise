@@ -1,0 +1,75 @@
+import clsx from "clsx";
+import { NavLink } from "react-router-dom";
+import { motion } from "motion/react";
+
+export default function Menu() {
+	return (
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{
+				duration: 0.3,
+				ease: "easeInOut",
+			}}
+			className="inset-0 fixed bg-black/20 z-40"
+		>
+			<motion.nav
+				initial={{ y: "-100%", opacity: 0.5 }}
+				animate={{ y: 0, opacity: 1 }}
+				exit={{ y: "-100%", opacity: 0.5 }}
+				transition={{
+					duration: 0.3,
+					ease: "easeInOut",
+				}}
+				className="fixed flex flex-col z-40 bg-white w-full top-18 text-center text-sm font-semibold sm:hidden"
+			>
+				<NavLink
+					to="/"
+					className={({ isActive }) =>
+						clsx(
+							"p-2 pt-3 hover:scale-[1.04] transition-all duration-100",
+							{
+								"scale-[1.05] hover:scale-[1.05] cursor-default":
+									isActive,
+							}
+						)
+					}
+				>
+					Home
+				</NavLink>
+				<NavLink
+					to="/library"
+					className={({ isActive }) =>
+						clsx(
+							"p-2 hover:scale-[1.04] transition-all duration-100",
+							{
+								"scale-[1.05] hover:scale-[1.05] cursor-default":
+									isActive,
+							}
+						)
+					}
+				>
+					My Library
+				</NavLink>
+				<NavLink
+					to="/explore"
+					className={({ isActive }) =>
+						clsx(
+							"p-2 hover:scale-[1.04] transition-all duration-100",
+							{
+								"scale-[1.05] hover:scale-[1.05] cursor-default":
+									isActive,
+							}
+						)
+					}
+				>
+					Explore
+				</NavLink>
+				<li className="list-none p-2 cursor-pointer bg-blue-500 text-white hover:bg-blue-600/90 transition-all duration-300">
+					Logout
+				</li>
+			</motion.nav>
+		</motion.div>
+	);
+}
