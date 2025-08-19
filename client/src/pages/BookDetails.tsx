@@ -83,7 +83,7 @@ export default function BookDetails() {
 				<img
 					src={book.imageLinks.thumbnail}
 					alt={book.title}
-					className="w-60 rounded-lg"
+					className="w-50 sm:w-60 rounded-lg"
 				/>
 				<RadioDialog
 					value={bookStatus}
@@ -91,7 +91,7 @@ export default function BookDetails() {
 					title={bookStatus ? "Edit Status" : "Add to Library"}
 					description="Choose the status of the book"
 				>
-					<Button classname="bg-blue-500 text-white mt-7 md:mt-3 hover:bg-blue-500/90">
+					<Button classname="bg-blue-500 text-white mt-5 md:mt-3 hover:bg-blue-500/90">
 						{bookStatus ? "Edit Status" : "Add to My Library"}
 					</Button>
 				</RadioDialog>
@@ -114,14 +114,13 @@ export default function BookDetails() {
 					rating={book.averageRating}
 					ratingsCount={book.ratingsCount}
 				/>
-				<div>{book.added && <div>{book?.status}</div>}</div>
 				<div className="mt-3 flex gap-3 flex-wrap text-sm mb-6">
 					{book.categories.map((category) => (
 						<BookCategory category={category} />
 					))}
 				</div>
 				<BookDescription description={book.description} lines={4} />
-				<div className="w-full pb-8 mt-3">
+				<div className="w-full pb-8 mt-5">
 					<PublicationInfo
 						publisher={book.publisher}
 						publishedDate={book.publishedDate}

@@ -1,4 +1,4 @@
-import ReactShowMoreText from "react-show-more-text";
+import { TextTruncate } from "./ui/text-truncate";
 
 interface BookDescriptionProps {
 	description: string;
@@ -10,16 +10,11 @@ export default function BookDescription({
 	lines,
 }: BookDescriptionProps) {
 	return (
-		<ReactShowMoreText
-			lines={lines}
-			more="Show more"
-			less="Show less"
-			anchorClass="cursor-pointer text-blue-500"
-		>
+		<TextTruncate maxLines={lines}>
 			<p
 				dangerouslySetInnerHTML={{ __html: description }}
 				className="text-gray-800 text-justify"
 			></p>
-		</ReactShowMoreText>
+		</TextTruncate>
 	);
 }

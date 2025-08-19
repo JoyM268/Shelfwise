@@ -10,6 +10,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import clsx from "clsx";
 
 interface RadioDialogProps {
 	children: ReactNode;
@@ -43,20 +44,27 @@ export function RadioDialog({
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>
-					<DialogDescription>{description}</DialogDescription>
+					<DialogDescription className="text-gray-600">
+						{description}
+					</DialogDescription>
 				</DialogHeader>
-				<div className="py-4">
+				<div className="mt-1 mb-2">
 					<RadioGroup value={value} onValueChange={onSelectOption}>
-						{options.map((option) => (
+						{options.map((option, index) => (
 							<div
 								key={option}
-								className="flex items-center space-x-2"
+								className={clsx(
+									"flex items-center space-x-2 mt-1",
+									{
+										"mt-2": index !== 0,
+									}
+								)}
 							>
 								<RadioGroupItem
 									value={option}
 									id={option}
 									onClick={() => setOpen(false)}
-									className="cursor-pointer"
+									className="cursor-pointer border-black"
 								/>
 								<Label
 									htmlFor={option}

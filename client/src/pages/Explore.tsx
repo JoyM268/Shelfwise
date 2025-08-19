@@ -1,6 +1,6 @@
 import PerfectScrollbar from "react-perfect-scrollbar";
 import BookCarousel from "@/components/BookCarousel";
-import Search from "../components/Search";
+import Search from "@/components/Search";
 import { useRef, type ChangeEvent, type FormEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
