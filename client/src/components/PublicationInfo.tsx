@@ -10,6 +10,7 @@ interface PublicationInfoProps {
 		width: string;
 		thickness: string;
 	};
+	isbn: string;
 }
 
 function languageNames(code: string) {
@@ -26,6 +27,7 @@ export default function PublicationInfo({
 	pageCount,
 	language,
 	dimensions,
+	isbn,
 }: PublicationInfoProps) {
 	return (
 		<Table>
@@ -43,6 +45,10 @@ export default function PublicationInfo({
 						Publisher
 					</TableCell>
 					<TableCell>{publisher}</TableCell>
+				</TableRow>
+				<TableRow>
+					<TableCell className="text-gray-800 py-4">ISBN</TableCell>
+					<TableCell>{isbn}</TableCell>
 				</TableRow>
 				<TableRow>
 					<TableCell className="text-gray-800 py-4">

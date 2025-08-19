@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { MouseEvent } from "react";
 import { clsx } from "clsx";
-import Book from "../components/Book";
+import Book from "@/components/Book";
 import EmptyMessage from "@/components/EmptyMessage";
 import { toast } from "sonner";
 

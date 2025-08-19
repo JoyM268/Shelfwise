@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { type ChangeEvent, type FormEvent } from "react";
-import Search from "../components/Search";
-import BookCarousel from "../components/BookCarousel";
+import Search from "@/components/Search";
+import BookCarousel from "@/components/BookCarousel";
 
 interface HomeProps {
 	isAuthenticated: boolean;
