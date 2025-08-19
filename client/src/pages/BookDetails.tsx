@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import type { BookStatus } from "./Library";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import StarIcon from "@mui/icons-material/Star";
-import ReactShowMoreText from "react-show-more-text";
+import Rating from "@/components/Rating";
 import Button from "@/components/Button";
+import PublicationInfo from "@/components/PublicationInfo";
+import BookDescription from "@/components/BookDescription";
+import BookCategory from "@/components/BookCategory";
 
 interface Book {
 	id: string;
@@ -71,14 +72,6 @@ const book: Book = {
 	language: "en",
 };
 
-function languageNames(code: string) {
-	const language = new Intl.DisplayNames(["en"], {
-		type: "language",
-	});
-
-	return language.of(code);
-}
-
 export default function BookDetails() {
 	const { bookId } = useParams();
 	const navigate = useNavigate();
@@ -105,77 +98,25 @@ export default function BookDetails() {
 				<span className="mt-2 p-1 text-gray-600 font-normal mb-4">
 					by {book.authors.join(", ")}
 				</span>
-				<div>
-					<div className="text-gray-500 text-sm flex items-center gap-1 font-medium">
-						<StarIcon style={{ color: "#f7d52a" }} />{" "}
-						{book.averageRating} ({book.ratingsCount})
-					</div>
-					{book.added && <div>{book?.status}</div>}
-				</div>
+				<Rating
+					rating={book.averageRating}
+					ratingsCount={book.ratingsCount}
+				/>
+				<div>{book.added && <div>{book?.status}</div>}</div>
 				<div className="mt-3 flex gap-3 flex-wrap text-sm mb-6">
 					{book.categories.map((category) => (
-						<div className="bg-gray-200 text-gray-700 font-medium px-2 rounded-lg py-1">
-							{category}
-						</div>
+						<BookCategory category={category} />
 					))}
 				</div>
-				<ReactShowMoreText
-					lines={4}
-					more="Show more"
-					less="Show less"
-					anchorClass="cursor-pointer text-blue-500"
-				>
-					<p
-						dangerouslySetInnerHTML={{ __html: book.description }}
-						className="text-gray-800 text-justify"
-					></p>
-				</ReactShowMoreText>
+				<BookDescription description={book.description} lines={4} />
 				<div className="w-full pb-8 mt-3">
-					<Table>
-						<TableBody>
-							<TableRow>
-								<TableCell
-									className="text-xl font-semibold pb-4"
-									colSpan={2}
-								>
-									Publication Info
-								</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell className="text-gray-800 py-4">
-									Publisher
-								</TableCell>
-								<TableCell>{book.publisher}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell className="text-gray-800 py-4">
-									Publication Date
-								</TableCell>
-								<TableCell>{book.publishedDate}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell className="text-gray-800 py-4">
-									Pages
-								</TableCell>
-								<TableCell>{book.pageCount}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell className="text-gray-800 py-4">
-									Language
-								</TableCell>
-								<TableCell>
-									{languageNames(book.language) ||
-										book.language}
-								</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell className="text-gray-800 py-4">
-									Dimensions
-								</TableCell>
-								<TableCell>{`${book.dimensions.height} x ${book.dimensions.width} x ${book.dimensions.thickness}`}</TableCell>
-							</TableRow>
-						</TableBody>
-					</Table>
+					<PublicationInfo
+						publisher={book.publisher}
+						publishedDate={book.publishedDate}
+						dimensions={book.dimensions}
+						pageCount={book.pageCount}
+						language={book.language}
+					/>
 				</div>
 			</div>
 		</div>

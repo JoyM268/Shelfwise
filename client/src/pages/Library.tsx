@@ -55,6 +55,7 @@ export default function Library() {
 	const [section, setSection] = useState("All Books");
 	const [books, setBooks] = useState(bookData);
 	const count: [number, number, number] = [0, 0, 0];
+	const tabs = ["All Books", "Plan to Read", "Reading", "Finished"];
 
 	function changeStatus(id: string, status: BookStatus) {
 		const newBooks = books.map((book) => {
@@ -94,42 +95,17 @@ export default function Library() {
 			<div className="w-full">
 				<div className="w-full">
 					<div className="flex items-center justify-items-start gap-6 font-semibold text-gray-600 border-b border-b-gray-400 w-full pl-2 text-xs sm:text-base">
-						<div
-							className={clsx("cursor-pointer pb-2", {
-								"border-b-3 border-blue-500 text-black":
-									section === "All Books",
-							})}
-							onClick={handleSectionClick}
-						>
-							All Books
-						</div>
-						<div
-							className={clsx("cursor-pointer pb-2", {
-								"border-b-3 border-blue-500 text-black":
-									section === "Plan to Read",
-							})}
-							onClick={handleSectionClick}
-						>
-							Plan to Read
-						</div>
-						<div
-							className={clsx("cursor-pointer pb-2", {
-								"border-b-3 border-blue-500 text-black":
-									section === "Reading",
-							})}
-							onClick={handleSectionClick}
-						>
-							Reading
-						</div>
-						<div
-							className={clsx("cursor-pointer pb-2", {
-								"border-b-3 border-blue-500 text-black":
-									section === "Finished",
-							})}
-							onClick={handleSectionClick}
-						>
-							Finished
-						</div>
+						{tabs.map((tab) => (
+							<div
+								className={clsx("cursor-pointer pb-2", {
+									"border-b-3 border-blue-500 text-black":
+										section === tab,
+								})}
+								onClick={handleSectionClick}
+							>
+								{tab}
+							</div>
+						))}
 					</div>
 					<div className="mt-4 flex gap-2 flex-wrap">
 						{books.map((book) => {
