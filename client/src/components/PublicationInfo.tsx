@@ -41,33 +41,33 @@ export default function PublicationInfo({
 					</TableCell>
 				</TableRow>
 				<TableRow>
-					<TableCell className="text-gray-800 py-4">
+					<TableCell className="text-gray-600 py-4">
 						Publisher
 					</TableCell>
 					<TableCell>{publisher}</TableCell>
 				</TableRow>
 				<TableRow>
-					<TableCell className="text-gray-800 py-4">ISBN</TableCell>
+					<TableCell className="text-gray-600 py-4">ISBN</TableCell>
 					<TableCell>{isbn}</TableCell>
 				</TableRow>
 				<TableRow>
-					<TableCell className="text-gray-800 py-4">
+					<TableCell className="text-gray-600 py-4">
 						Publication Date
 					</TableCell>
 					<TableCell>{publishedDate}</TableCell>
 				</TableRow>
 				<TableRow>
-					<TableCell className="text-gray-800 py-4">Pages</TableCell>
+					<TableCell className="text-gray-600 py-4">Pages</TableCell>
 					<TableCell>{pageCount}</TableCell>
 				</TableRow>
 				<TableRow>
-					<TableCell className="text-gray-800 py-4">
+					<TableCell className="text-gray-600 py-4">
 						Language
 					</TableCell>
 					<TableCell>{languageNames(language) || language}</TableCell>
 				</TableRow>
 				<TableRow>
-					<TableCell className="text-gray-800 py-4">
+					<TableCell className="text-gray-600 py-4">
 						Dimensions
 					</TableCell>
 					<TableCell>{`${dimensions.height} x ${dimensions.width} x ${dimensions.thickness}`}</TableCell>

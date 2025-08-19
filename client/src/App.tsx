@@ -8,6 +8,7 @@ import BookDetails from "./pages/BookDetails";
 import { Toaster } from "./components/ui/sonner";
 import { AnimatePresence } from "motion/react";
 import Menu from "./components/Menu";
+import Login from "./pages/Login";
 
 function App() {
 	const isAuthenticated = true;
@@ -87,7 +88,9 @@ function App() {
 				}}
 			/>
 			<div className="pt-20 h-screen relative">
-				<AnimatePresence>{menu && <Menu />}</AnimatePresence>
+				<AnimatePresence>
+					{menu && <Menu isAuthenticated={isAuthenticated} />}
+				</AnimatePresence>
 				<Routes>
 					<Route
 						path="/"
@@ -113,6 +116,7 @@ function App() {
 					/>
 					<Route path="/library" element={<Library />} />
 					<Route path="/book/:bookId" element={<BookDetails />} />
+					<Route path="/login" element={<Login />} />
 				</Routes>
 			</div>
 		</div>

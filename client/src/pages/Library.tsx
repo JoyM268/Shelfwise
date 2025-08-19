@@ -68,7 +68,7 @@ export default function Library() {
 			return book;
 		});
 		setBooks(newBooks);
-		toast(`The book has been added to '${status}'`);
+		toast(`The book has been added to '${status}'.`);
 	}
 
 	function handleSectionClick(event: MouseEvent<HTMLDivElement>) {
@@ -83,6 +83,7 @@ export default function Library() {
 	function handleBookRemove(id: string) {
 		const newBooks = books.filter((book) => book.id !== id);
 		setBooks(newBooks);
+		toast("The book has been removed from library.");
 	}
 
 	return (
@@ -154,7 +155,7 @@ export default function Library() {
 
 						{section === "Reading" && count[1] === 0 && (
 							<EmptyMessage
-								title="You Are Not Reading Any Books Currently"
+								title="You Are Not Currently Reading Any Books"
 								description="Explore thousands of titles and choose a book to start reading today."
 							/>
 						)}

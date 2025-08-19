@@ -2,7 +2,11 @@ import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import { motion } from "motion/react";
 
-export default function Menu() {
+export default function Menu({
+	isAuthenticated,
+}: {
+	isAuthenticated: boolean;
+}) {
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
@@ -38,20 +42,22 @@ export default function Menu() {
 				>
 					Home
 				</NavLink>
-				<NavLink
-					to="/library"
-					className={({ isActive }) =>
-						clsx(
-							"p-2 hover:scale-[1.04] transition-all duration-100",
-							{
-								"scale-[1.05] hover:scale-[1.05] cursor-default text-black":
-									isActive,
-							}
-						)
-					}
-				>
-					My Library
-				</NavLink>
+				{isAuthenticated && (
+					<NavLink
+						to="/library"
+						className={({ isActive }) =>
+							clsx(
+								"p-2 hover:scale-[1.04] transition-all duration-100",
+								{
+									"scale-[1.05] hover:scale-[1.05] cursor-default text-black":
+										isActive,
+								}
+							)
+						}
+					>
+						My Library
+					</NavLink>
+				)}
 				<NavLink
 					to="/explore"
 					className={({ isActive }) =>
@@ -66,9 +72,42 @@ export default function Menu() {
 				>
 					Explore
 				</NavLink>
-				<li className="list-none p-2 cursor-pointer bg-blue-500 text-white hover:bg-blue-600/90 transition-all duration-300">
-					Logout
-				</li>
+				{!isAuthenticated && (
+					<>
+						<NavLink
+							to="/login"
+							className={({ isActive }) =>
+								clsx(
+									"p-2 pb-3 hover:scale-[1.04] transition-all duration-100",
+									{
+										"scale-[1.05] hover:scale-[1.05] cursor-default text-black":
+											isActive,
+									}
+								)
+							}
+						>
+							Login
+						</NavLink>
+						<NavLink
+							to="/signup"
+							className={({ isActive }) =>
+								clsx(
+									"list-none p-2 cursor-pointer bg-blue-500 text-white hover:bg-blue-600/90 transition-all duration-300",
+									{
+										"bg-blue-600 cursor-default": isActive,
+									}
+								)
+							}
+						>
+							Sign Up
+						</NavLink>
+					</>
+				)}
+				{isAuthenticated && (
+					<li className="list-none p-2 cursor-pointer bg-blue-500 text-white hover:bg-blue-600/90 transition-all duration-300">
+						Logout
+					</li>
+				)}
 			</motion.nav>
 		</motion.div>
 	);

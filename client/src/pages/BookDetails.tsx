@@ -5,6 +5,9 @@ import Button from "@/components/Button";
 import PublicationInfo from "@/components/PublicationInfo";
 import BookDescription from "@/components/BookDescription";
 import BookCategory from "@/components/BookCategory";
+import { RadioDialog } from "@/components/RadioDialog";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface Book {
 	id: string;
@@ -63,9 +66,15 @@ const book: Book = {
 export default function BookDetails() {
 	const { bookId } = useParams();
 	const navigate = useNavigate();
+	const [bookStatus, setBookStatus] = useState("");
 
 	function back() {
 		navigate(-1);
+	}
+
+	function removeBook() {
+		setBookStatus("");
+		toast("The book has been removed from library.");
 	}
 
 	return (
@@ -76,9 +85,24 @@ export default function BookDetails() {
 					alt={book.title}
 					className="w-60 rounded-lg"
 				/>
-				<Button classname="bg-blue-500 text-white mt-7 md:mt-3 hover:bg-blue-500/90">
-					Add to My Library
-				</Button>
+				<RadioDialog
+					value={bookStatus}
+					onValueChange={setBookStatus}
+					title={bookStatus ? "Edit Status" : "Add to Library"}
+					description="Choose the status of the book"
+				>
+					<Button classname="bg-blue-500 text-white mt-7 md:mt-3 hover:bg-blue-500/90">
+						{bookStatus ? "Edit Status" : "Add to My Library"}
+					</Button>
+				</RadioDialog>
+				{bookStatus && (
+					<Button
+						classname="bg-red-500 text-white hover:bg-red-500/90"
+						onClick={removeBook}
+					>
+						Remove from Library
+					</Button>
+				)}
 				<Button onClick={back}>Go Back</Button>
 			</div>
 			<div className="overflow-y-auto flex flex-col items-start sm:pr-20">

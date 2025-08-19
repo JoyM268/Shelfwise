@@ -34,6 +34,32 @@ export default function Header({
 				>
 					Home
 				</NavLink>
+
+				{isAuthenticated && (
+					<NavLink
+						to="/library"
+						className={({ isActive }) =>
+							clsx({
+								"text-black scale-[1.02] cursor-default":
+									isActive,
+							})
+						}
+					>
+						My Library
+					</NavLink>
+				)}
+
+				<NavLink
+					to="/explore"
+					className={({ isActive }) =>
+						clsx({
+							"text-black scale-[1.02] cursor-default": isActive,
+						})
+					}
+				>
+					Explore
+				</NavLink>
+
 				{!isAuthenticated && (
 					<>
 						<NavLink
@@ -50,10 +76,12 @@ export default function Header({
 						<NavLink
 							to="/signup"
 							className={({ isActive }) =>
-								clsx({
-									"text-black scale-[1.02] cursor-default":
-										isActive,
-								})
+								clsx(
+									"cursor-pointer bg-blue-500 text-white p-2 rounded-md hover:scale-[0.97] shadow",
+									{
+										"bg-blue-600 cursor-default": isActive,
+									}
+								)
 							}
 						>
 							Sign up
@@ -62,33 +90,9 @@ export default function Header({
 				)}
 
 				{isAuthenticated && (
-					<>
-						<NavLink
-							to="/library"
-							className={({ isActive }) =>
-								clsx({
-									"text-black scale-[1.02] cursor-default":
-										isActive,
-								})
-							}
-						>
-							My Library
-						</NavLink>
-						<NavLink
-							to="/explore"
-							className={({ isActive }) =>
-								clsx({
-									"text-black scale-[1.02] cursor-default":
-										isActive,
-								})
-							}
-						>
-							Explore
-						</NavLink>
-						<button className="cursor-pointer bg-blue-500 text-white p-2 rounded-md hover:scale-[0.97] shadow">
-							Logout
-						</button>
-					</>
+					<button className="cursor-pointer bg-blue-500 text-white p-2 rounded-md hover:scale-[0.97] shadow">
+						Logout
+					</button>
 				)}
 			</nav>
 			<div
