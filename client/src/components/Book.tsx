@@ -1,15 +1,16 @@
+import { NavLink } from "react-router-dom";
 import StatusDropdownMenu from "./StatusDropdownMenu";
 import type { BookStatus } from "@/pages/Library";
 
 interface BookProps {
-	id: number;
+	id: string;
 	src: string;
 	title: string;
 	authors: string[];
 	progress?: number;
 	status?: BookStatus;
-	changeStatus?: (id: number, status: BookStatus) => void;
-	handleBookRemove?: (id: number) => void;
+	changeStatus?: (id: string, status: BookStatus) => void;
+	handleBookRemove?: (id: string) => void;
 }
 
 export default function Book({
@@ -35,15 +36,20 @@ export default function Book({
 					handleBookRemove={handleBookRemove}
 				/>
 			)}
-			<img
-				src={src}
-				className="w-36 sm:w-40 rounded-xs hover:scale-[1.008] cursor-pointer transition-all duration-300"
-			/>
+			<NavLink to={`/book/${id}`}>
+				<img
+					src={src}
+					className="w-36 sm:w-40 rounded-xs hover:scale-[1.008] cursor-pointer transition-all duration-300"
+				/>
+			</NavLink>
 			<span className="text-[12px] sm:text-[13px] font-semibold mt-3 cursor-pointer hover:text-gray-700 transition-all duration-300">
-				{title.length < 21 ? title : title.slice(0, 19) + "..."}
+				<NavLink to={`/book/${id}`}>
+					{title.length < 21 ? title : title.slice(0, 19) + "..."}
+				</NavLink>
 			</span>
+
 			<span className="text-[11px] sm:text-[12px]">
-				<span className="cursor-pointer">
+				<span>
 					{authorsFirstNames.length < 23
 						? authorsFirstNames
 						: authorsFirstNames.slice(0, 20) + "..."}

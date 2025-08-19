@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useEffect, useState, useRef, type ChangeEvent } from "react";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Explore from "./pages/Explore";
@@ -8,7 +8,6 @@ import BookDetails from "./pages/BookDetails";
 import { Toaster } from "./components/ui/sonner";
 import { AnimatePresence } from "motion/react";
 import Menu from "./components/Menu";
-import clsx from "clsx";
 
 function App() {
 	const isAuthenticated = true;
@@ -16,10 +15,46 @@ function App() {
 	const [results, setResults] = useState(false);
 	const [menu, setMenu] = useState(false);
 	const location = useLocation();
+	const scrollPosition = useRef(0);
 
 	useEffect(() => {
 		setMenu(false);
 	}, [location]);
+
+	useEffect(() => {
+		if (menu) {
+			scrollPosition.current = window.scrollY;
+			document.body.style.position = "fixed";
+			document.body.style.top = `-${scrollPosition.current}px`;
+			document.body.style.width = "100%";
+		} else {
+			document.body.style.position = "";
+			document.body.style.top = "";
+			document.body.style.width = "";
+			window.scrollTo(0, scrollPosition.current);
+			scrollPosition.current = 0;
+		}
+
+		return () => {
+			document.body.style.position = "";
+			document.body.style.top = "";
+			document.body.style.width = "";
+		};
+	}, [menu]);
+
+	useEffect(() => {
+		function handleResize() {
+			if (window.innerWidth >= 640) {
+				if (menu) {
+					setMenu(false);
+				}
+			}
+		}
+
+		window.addEventListener("resize", handleResize);
+
+		return () => window.removeEventListener("resize", handleResize);
+	}, [menu]);
 
 	function handleSearch(event?: ChangeEvent<HTMLInputElement>) {
 		if (event) {
@@ -51,11 +86,7 @@ function App() {
 					duration: 1500,
 				}}
 			/>
-			<div
-				className={clsx("pt-20 h-screen relative", {
-					"overflow-y-hidden": menu,
-				})}
-			>
+			<div className="pt-20 h-screen relative">
 				<AnimatePresence>{menu && <Menu />}</AnimatePresence>
 				<Routes>
 					<Route

@@ -13,9 +13,9 @@ import { useState } from "react";
 import BookRemoveWarning from "./BookRemoveWarning";
 
 interface StatusDropdownMenuProps {
-	id: number;
-	changeStatus(id: number, status: BookStatus): void;
-	handleBookRemove(id: number): void;
+	id: string;
+	changeStatus(id: string, status: BookStatus): void;
+	handleBookRemove(id: string): void;
 	status: BookStatus;
 }
 

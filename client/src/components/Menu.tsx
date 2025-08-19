@@ -12,7 +12,7 @@ export default function Menu() {
 				duration: 0.3,
 				ease: "easeInOut",
 			}}
-			className="inset-0 fixed bg-black/20 z-40"
+			className="inset-0 fixed bg-black/20 z-40 sm:hidden"
 		>
 			<motion.nav
 				initial={{ y: "-100%", opacity: 0.5 }}
@@ -22,7 +22,7 @@ export default function Menu() {
 					duration: 0.3,
 					ease: "easeInOut",
 				}}
-				className="fixed flex flex-col z-40 bg-white w-full top-18 text-center text-sm font-semibold sm:hidden"
+				className="fixed flex flex-col z-40 bg-white w-full top-18 text-center text-sm font-semibold sm:hidden text-gray-700"
 			>
 				<NavLink
 					to="/"
@@ -30,7 +30,7 @@ export default function Menu() {
 						clsx(
 							"p-2 pt-3 hover:scale-[1.04] transition-all duration-100",
 							{
-								"scale-[1.05] hover:scale-[1.05] cursor-default":
+								"scale-[1.05] hover:scale-[1.05] cursor-default text-black":
 									isActive,
 							}
 						)
@@ -44,7 +44,7 @@ export default function Menu() {
 						clsx(
 							"p-2 hover:scale-[1.04] transition-all duration-100",
 							{
-								"scale-[1.05] hover:scale-[1.05] cursor-default":
+								"scale-[1.05] hover:scale-[1.05] cursor-default text-black":
 									isActive,
 							}
 						)
@@ -56,9 +56,9 @@ export default function Menu() {
 					to="/explore"
 					className={({ isActive }) =>
 						clsx(
-							"p-2 hover:scale-[1.04] transition-all duration-100",
+							"p-2 pb-3 hover:scale-[1.04] transition-all duration-100",
 							{
-								"scale-[1.05] hover:scale-[1.05] cursor-default":
+								"scale-[1.05] hover:scale-[1.05] cursor-default text-black":
 									isActive,
 							}
 						)

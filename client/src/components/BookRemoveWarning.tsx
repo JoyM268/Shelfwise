@@ -11,8 +11,8 @@ import {
 } from "./ui/alert-dialog";
 
 interface BookRemoveWarningProps {
-	id: number;
-	handleBookRemove(id: number): void;
+	id: string;
+	handleBookRemove(id: string): void;
 	alert: boolean;
 	setAlert: React.Dispatch<React.SetStateAction<boolean>>;
 }

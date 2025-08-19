@@ -8,7 +8,7 @@ import { toast } from "sonner";
 export type BookStatus = "Reading" | "Plan to Read" | "Finished";
 
 interface BookDataProps {
-	id: number;
+	id: string;
 	src: string;
 	title: string;
 	authors: string[];
@@ -20,7 +20,7 @@ interface BookDataProps {
 
 const bookData: BookDataProps[] = [
 	{
-		id: 1,
+		id: "1",
 		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
 		title: "How to Influence Others and Earn Their Trust",
 		authors: ["Ayman Elmassarawy"],
@@ -30,7 +30,7 @@ const bookData: BookDataProps[] = [
 		description: "Hello World",
 	},
 	{
-		id: 2,
+		id: "2",
 		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
 		title: "Hello",
 		authors: ["Ayman Elmassarawy"],
@@ -40,7 +40,7 @@ const bookData: BookDataProps[] = [
 		description: "Hello World",
 	},
 	{
-		id: 3,
+		id: "3",
 		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
 		title: "How to Influence Others and Earn Their Trust",
 		authors: ["Ayman Elmassarawy"],
@@ -56,7 +56,7 @@ export default function Library() {
 	const [books, setBooks] = useState(bookData);
 	const count: [number, number, number] = [0, 0, 0];
 
-	function changeStatus(id: number, status: BookStatus) {
+	function changeStatus(id: string, status: BookStatus) {
 		const newBooks = books.map((book) => {
 			if (book.id === id) {
 				return {
@@ -79,7 +79,7 @@ export default function Library() {
 		}
 	}
 
-	function handleBookRemove(id: number) {
+	function handleBookRemove(id: string) {
 		const newBooks = books.filter((book) => book.id !== id);
 		setBooks(newBooks);
 	}

@@ -23,7 +23,7 @@ export default function Header({
 				<img src="/logo.png" className="w-10 mr-1" />
 				Shelfwise
 			</NavLink>
-			<nav className="gap-6 items-center text-gray-800 text-sm font-medium leading-normal hidden sm:flex pr-3">
+			<nav className="gap-6 items-center text-gray-600 text-sm font-medium leading-normal hidden sm:flex pr-3">
 				<NavLink
 					to="/"
 					className={({ isActive }) =>

@@ -104,7 +104,7 @@ export default function Explore({
 					}}
 					className={`${
 						index === genres.length - 1 ? "mt-4 pb-12" : "mt-4"
-					} scroll-mt-20`}
+					} scroll-mt-24`}
 				>
 					<BookCarousel title={genre.name} />
 				</div>
