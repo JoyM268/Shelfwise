@@ -8,10 +8,11 @@ import BookDetails from "./pages/BookDetails";
 import { Toaster } from "./components/ui/sonner";
 import { AnimatePresence } from "motion/react";
 import Menu from "./components/Menu";
-import Login from "./pages/Login";
+import Auth from "./pages/Auth";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
-	const isAuthenticated = true;
+	const isAuthenticated = false;
 	const [search, setSearch] = useState("");
 	const [results, setResults] = useState(false);
 	const [menu, setMenu] = useState(false);
@@ -114,9 +115,35 @@ function App() {
 							/>
 						}
 					/>
-					<Route path="/library" element={<Library />} />
-					<Route path="/book/:bookId" element={<BookDetails />} />
-					<Route path="/login" element={<Login />} />
+					<Route
+						element={
+							<ProtectedRoutes
+								isAuthenticated={isAuthenticated}
+							/>
+						}
+					>
+						<Route path="/library" element={<Library />} />
+					</Route>
+					<Route
+						path="/book/:bookId"
+						element={
+							<BookDetails isAuthenticated={isAuthenticated} />
+						}
+					/>
+					<Route
+						path="/login"
+						element={
+							<Auth
+								title="Welcome Back"
+								description="Login to access your personal library and track your reading."
+								buttonText="Login"
+								name={false}
+								confirmPassword={false}
+								signup={false}
+							/>
+						}
+					/>
+					<Route path="/signup" element={<Auth />} />
 				</Routes>
 			</div>
 		</div>

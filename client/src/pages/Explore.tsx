@@ -3,6 +3,7 @@ import BookCarousel from "@/components/BookCarousel";
 import Search from "@/components/Search";
 import { useRef, type ChangeEvent, type FormEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import Tilt from "react-parallax-tilt";
 
 interface ExploreProps {
 	handleSearch(event: ChangeEvent<HTMLInputElement>): void;
@@ -81,13 +82,17 @@ export default function Explore({
 					<div className="px-2 mt-4 grid grid-flow-col auto-cols-min gap-4 pb-4">
 						{genres.map((genre) => (
 							<div key={genre.src}>
-								<div
-									className="w-32 sm:w-36 h-32 sm:h-36 rounded-lg hover:scale-[1.01] cursor-pointer mb-2 bg-cover"
-									style={{
-										backgroundImage: `url("/genres/${genre.src}.png")`,
-									}}
-									onClick={() => handleGenreClick(genre.src)}
-								></div>
+								<Tilt tiltReverse={true}>
+									<div
+										className="w-32 sm:w-36 h-32 sm:h-36 rounded-lg cursor-pointer mb-2 bg-cover"
+										style={{
+											backgroundImage: `url("/genres/${genre.src}.png")`,
+										}}
+										onClick={() =>
+											handleGenreClick(genre.src)
+										}
+									></div>
+								</Tilt>
 								<span className="pl-1 font-semibold">
 									{genre.name}
 								</span>

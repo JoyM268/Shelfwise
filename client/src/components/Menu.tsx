@@ -99,7 +99,7 @@ export default function Menu({
 								)
 							}
 						>
-							Sign Up
+							Sign up
 						</NavLink>
 					</>
 				)}
