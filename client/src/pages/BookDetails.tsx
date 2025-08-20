@@ -1,5 +1,4 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import type { BookStatus } from "./Library";
 import Rating from "@/components/Rating";
 import Button from "@/components/Button";
 import PublicationInfo from "@/components/PublicationInfo";
@@ -12,8 +11,6 @@ import BookRemoveWarning from "@/components/BookRemoveWarning";
 
 interface Book {
 	id: string;
-	added: boolean;
-	status?: BookStatus;
 	title: string;
 	authors: string[];
 	publisher: string;
@@ -38,7 +35,6 @@ interface Book {
 
 const book: Book = {
 	id: "ljWL5A7D2JAC",
-	added: true,
 	title: "The Hobbit, Or, There and Back Again",
 	authors: ["John Ronald Reuel Tolkien"],
 	publisher: "Houghton Mifflin",
