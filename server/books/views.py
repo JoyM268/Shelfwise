@@ -3,10 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 import pycountry
+from django.conf import settings
 
 class getBookDetails(APIView):
     def get(self, request, bookId):
-        url = f"https://www.googleapis.com/books/v1/volumes/{bookId}"
+        api_key = settings.GOOGLE_API_KEY
+        url = f"https://www.googleapis.com/books/v1/volumes/{bookId}?key={api_key}"
         try:
             res = requests.get(url)
 
@@ -30,7 +32,6 @@ class getBookDetails(APIView):
                         isbn = industryIdentifiers[0]["identifier"] 
                     else:
                         isbn = industryIdentifiers[1]["identifier"] 
-
 
                 language_name = None
                 code = details.get("language")
