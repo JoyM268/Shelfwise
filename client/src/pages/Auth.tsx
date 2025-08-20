@@ -33,22 +33,22 @@ export default function Auth({
 }: AuthProps) {
 	const formSchema = z
 		.object({
-			...(name && {
-				name: z.string().min(2, {
-					message: "Name must be at least 2 characters.",
-				}),
-			}),
-			email: z.email({
+			name: name
+				? z.string().min(2, {
+						message: "Name must be at least 2 characters.",
+				  })
+				: z.string().optional(),
+			email: z.string().email({
 				message: "Invalid email address.",
 			}),
 			password: z.string().min(8, {
 				message: "Password must be at least 8 characters.",
 			}),
-			...(confirmPassword && {
-				confirmPassword: z.string().min(8, {
-					message: "Password must be at least 8 characters.",
-				}),
-			}),
+			confirmPassword: confirmPassword
+				? z.string().min(8, {
+						message: "Password must be at least 8 characters.",
+				  })
+				: z.string().optional(),
 		})
 		.refine(
 			(data) => {
@@ -63,6 +63,7 @@ export default function Auth({
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
+		mode: "onChange",
 		defaultValues: {
 			name: "",
 			email: "",
@@ -70,6 +71,10 @@ export default function Auth({
 			confirmPassword: "",
 		},
 	});
+
+	const onSubmit = (values: z.infer<typeof formSchema>) => {
+		console.log(values);
+	};
 	return (
 		<div className="max-w-[400px] mx-auto flex flex-col gap-5 px-6 pt-6 pb-5">
 			<div className="flex flex-col gap-2">
@@ -79,7 +84,10 @@ export default function Auth({
 				</p>
 			</div>
 			<Form {...form}>
-				<form className="flex flex-col gap-4">
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className="flex flex-col gap-4"
+				>
 					{name && (
 						<FormField
 							control={form.control}
