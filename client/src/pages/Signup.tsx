@@ -14,45 +14,24 @@ import { z } from "zod";
 import { NavLink } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-interface AuthProps {
-	title?: string;
-	description?: string;
-	name?: boolean;
-	confirmPassword?: boolean;
-	buttonText?: string;
-	signup?: boolean;
-}
-
-export default function Auth({
-	title = "Start Your Reading Journey",
-	description = "Create an account to build your personal library, track your reading progress, and discover your next favorite book.",
-	name = true,
-	confirmPassword = true,
-	buttonText = "Create Account",
-	signup = true,
-}: AuthProps) {
+export default function Signup() {
 	const formSchema = z
 		.object({
-			name: name
-				? z.string().min(2, {
-						message: "Name must be at least 2 characters.",
-				  })
-				: z.string().optional(),
+			name: z.string().min(2, {
+				message: "Name must be at least 2 characters.",
+			}),
 			email: z.string().email({
 				message: "Invalid email address.",
 			}),
 			password: z.string().min(8, {
 				message: "Password must be at least 8 characters.",
 			}),
-			confirmPassword: confirmPassword
-				? z.string().min(8, {
-						message: "Password must be at least 8 characters.",
-				  })
-				: z.string().optional(),
+			confirmPassword: z.string().min(8, {
+				message: "Password must be at least 8 characters.",
+			}),
 		})
 		.refine(
 			(data) => {
-				if (!confirmPassword) return true;
 				return data.password === data.confirmPassword;
 			},
 			{
@@ -78,9 +57,12 @@ export default function Auth({
 	return (
 		<div className="max-w-[400px] mx-auto flex flex-col gap-5 px-6 pt-6 pb-5">
 			<div className="flex flex-col gap-2">
-				<h1 className="text-xl sm:text-3xl font-semibold">{title}</h1>
+				<h1 className="text-xl sm:text-3xl font-semibold">
+					Start Your Reading Journey
+				</h1>
 				<p className="text-xs sm:text-sm text-gray-500">
-					{description}
+					Create an account to build your personal library, track your
+					reading progress, and discover your next favorite book.
 				</p>
 			</div>
 			<Form {...form}>
@@ -88,27 +70,26 @@ export default function Auth({
 					onSubmit={form.handleSubmit(onSubmit)}
 					className="flex flex-col gap-4"
 				>
-					{name && (
-						<FormField
-							control={form.control}
-							name="name"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="text-xs sm:text-sm">
-										Name
-									</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Your Name"
-											{...field}
-											className="text-sm sm:text-base"
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					)}
+					<FormField
+						control={form.control}
+						name="name"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel className="text-xs sm:text-sm">
+									Name
+								</FormLabel>
+								<FormControl>
+									<Input
+										placeholder="Your Name"
+										{...field}
+										className="text-sm sm:text-base"
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
 					<FormField
 						control={form.control}
 						name="email"
@@ -148,45 +129,40 @@ export default function Auth({
 							</FormItem>
 						)}
 					/>
-					{confirmPassword && (
-						<FormField
-							control={form.control}
-							name="confirmPassword"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="text-xs sm:text-sm">
-										Confirm Password
-									</FormLabel>
-									<FormControl>
-										<Input
-											type="password"
-											placeholder="Password"
-											{...field}
-											className="text-sm sm:text-base"
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					)}
+
+					<FormField
+						control={form.control}
+						name="confirmPassword"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel className="text-xs sm:text-sm">
+									Confirm Password
+								</FormLabel>
+								<FormControl>
+									<Input
+										type="password"
+										placeholder="Password"
+										{...field}
+										className="text-sm sm:text-base"
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
 					<div>
 						<Button
 							type="submit"
 							classname="bg-blue-500 text-white hover:bg-blue-500/90 text-sm sm:text-base mb-2"
 						>
-							{buttonText}
+							Create Account
 						</Button>
 						<FormDescription className="pl-2">
 							<div>
-								{signup
-									? "Already have an account?"
-									: "Don't have an account?"}{" "}
-								<NavLink
-									to={signup ? "/login" : "/signup"}
-									className="text-blue-400"
-								>
-									{signup ? "Login" : "Signup"}
+								Already have an account?{" "}
+								<NavLink to="/login" className="text-blue-400">
+									Login
 								</NavLink>
 							</div>
 						</FormDescription>
