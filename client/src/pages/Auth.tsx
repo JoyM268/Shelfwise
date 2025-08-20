@@ -79,7 +79,7 @@ export default function Auth({
 				</p>
 			</div>
 			<Form {...form}>
-				<form>
+				<form className="flex flex-col gap-4">
 					{name && (
 						<FormField
 							control={form.control}
