@@ -5,9 +5,10 @@ from rest_framework import status
 import pycountry
 from django.conf import settings
 
+api_key = settings.GOOGLE_API_KEY
+
 class getBookDetails(APIView):
     def get(self, request, bookId):
-        api_key = settings.GOOGLE_API_KEY
         url = f"https://www.googleapis.com/books/v1/volumes/{bookId}?key={api_key}"
         try:
             res = requests.get(url)
@@ -72,3 +73,90 @@ class getBookDetails(APIView):
                 {"error": f"Could not connect to the Google Books API: {e}"},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE
             )
+        
+def filterBookDetails(book):
+    details = book.get("volumeInfo", {})
+    return {
+        "id": book.get("id"),
+        "src": details.get("imageLinks"),
+        "title": details.get("title"),
+        "authors": details.get("authors")
+    }
+
+class getBooksByGenre(APIView):
+    def get(self, request):
+        search_query = self.request.query_params.get('q', None)
+        if search_query:
+            genre = search_query if " " not in search_query else f"\"{search_query}\""
+            url = f"https://www.googleapis.com/books/v1/volumes?q=subject:{genre}&maxResults=40&key={api_key}"
+            try:
+                res = requests.get(url)
+                if res.status_code == 200:
+                    data = res.json()
+                    bookList = data.get("items", [])
+                    newBookList = map(filterBookDetails, bookList)
+                    return Response(newBookList, status=status.HTTP_200_OK)
+                elif res.status_code == 400:
+                    return Response({"error": "Invalid Genre."}, status=status.HTTP_404_NOT_FOUND)     
+                else:
+                    return Response(
+                        {"error": "Failed to retrieve books from Google Books."},
+                        status=res.status_code
+                    )
+            except requests.exceptions.RequestException as e:
+                return Response(
+                {"error": f"Could not connect to the Google Books API: {e}"},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE
+            )
+        else:
+            return Response({"error": "Required parameter: q"}, status=status.HTTP_400_BAD_REQUEST)
+        
+class getRecentBooks(APIView):
+    def get(self, request):
+        url = f"https://www.googleapis.com/books/v1/volumes?q=a&orderBy=newest&maxResults=40&key={api_key}"
+        try:
+            res = requests.get(url)
+        
+            if res.status_code == 200:
+                data = res.json()
+                bookList = data.get("items", [])
+                newBookList = map(filterBookDetails, bookList)
+                return Response(newBookList, status=status.HTTP_200_OK)
+            else:
+                return Response(
+                        {"error": "Failed to retrieve books from Google Books."},
+                        status=res.status_code
+                    )
+        except requests.exceptions.RequestException as e:
+                return Response(
+                {"error": f"Could not connect to the Google Books API: {e}"},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        
+class getBooksByQuery(APIView):
+    def get(self, request):
+        search_query = self.request.query_params.get('q', None)
+        if search_query:
+            title = search_query if " " not in search_query else f"\"{search_query}\""
+            url = f"https://www.googleapis.com/books/v1/volumes?q={title}&maxResults=40&key={api_key}"
+            
+            try:
+                res = requests.get(url)
+                
+                if res.status_code == 200:
+                    data = res.json()
+                    bookList = data.get("items", [])
+                    newBookList = map(filterBookDetails, bookList)
+                    return Response(newBookList, status=status.HTTP_200_OK)
+                elif res.status_code == 400:
+                    return Response({"error": "Book Not Found"}, status=status.HTTP_404_NOT_FOUND)
+                else:
+                    return Response(
+                            {"error": "Failed to retrieve books from Google Books."},
+                            status=res.status_code
+                        )
+            except requests.exceptions.RequestException as e:
+                return Response(
+                {"error": f"Could not connect to the Google Books API: {e}"},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        else:
+            return Response({"error": "Required parameter: q"}, status=status.HTTP_400_BAD_REQUEST)
