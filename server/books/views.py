@@ -111,9 +111,9 @@ class getBooksByGenre(APIView):
         else:
             return Response({"error": "Required parameter: q"}, status=status.HTTP_400_BAD_REQUEST)
         
-class getRecentBooks(APIView):
+class getTopBooks(APIView):
     def get(self, request):
-        url = f"https://www.googleapis.com/books/v1/volumes?q=a&orderBy=newest&maxResults=40&key={api_key}"
+        url = f"https://www.googleapis.com/books/v1/volumes?q=subject:\"science fiction\"&maxResults=40&key={api_key}"
         try:
             res = requests.get(url)
         

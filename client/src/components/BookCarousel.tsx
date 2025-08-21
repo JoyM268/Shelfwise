@@ -1,83 +1,85 @@
+import { useEffect, useState } from "react";
 import Book from "./Book";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 
-const books = [
-	{
-		id: "1",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-	},
-	{
-		id: "2",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-	},
-	{
-		id: "3",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-	},
-	{
-		id: "4",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-	},
-	{
-		id: "5",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-	},
-	{
-		id: "6",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-	},
-	{
-		id: "7",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-	},
-	{
-		id: "8",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-	},
-	{
-		id: "9",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-	},
-];
-
 interface BookCarouselProps {
 	title: string;
+	search_query: string;
+	search: boolean;
 }
 
-export default function BookCarousel({ title }: BookCarouselProps) {
+interface BookData {
+	id: string;
+	src: {
+		smallThumbnail: string;
+		thumbnail: string;
+	};
+	title: string;
+	authors: string[];
+}
+
+export default function BookCarousel({
+	title,
+	search_query,
+	search = false,
+}: BookCarouselProps) {
+	const [books, setBooks] = useState<BookData[] | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<null | string>(null);
+
+	useEffect(() => {
+		let url: string;
+		if (search_query === "top") {
+			url = "http://127.0.0.1:8000/api/books/top/";
+		} else if (!search) {
+			url = `http://127.0.0.1:8000/api/books/genre?q=${search_query}`;
+		} else {
+			url = `http://127.0.0.1:8000/api/books?q=${search_query}`;
+		}
+
+		async function getBooks() {
+			setLoading(true);
+			setError(null);
+			try {
+				const res = await fetch(url);
+				if (!res.ok) {
+					throw new Error(res.statusText);
+				}
+				const data = await res.json();
+
+				setBooks(data);
+			} catch (err) {
+				setError(err as string);
+			} finally {
+				setLoading(false);
+			}
+		}
+
+		getBooks();
+	}, []);
+
 	return (
 		<div className="flex flex-col gap-2">
 			<span className="font-semibold text-xl pl-3">{title}</span>
 			<PerfectScrollbar options={{ suppressScrollY: true }}>
 				<div className="grid grid-flow-col auto-cols-min pb-2 px-1 relative">
-					{books.map((book) => (
-						<Book
-							id={book.id}
-							key={book.id}
-							src={book.src}
-							title={book.title}
-							authors={book.authors}
-						/>
-					))}
+					{!loading &&
+						!error &&
+						books &&
+						books.map((book) => {
+							if (book.src) {
+								return (
+									<Book
+										id={book.id}
+										key={book.id}
+										src={book.src?.thumbnail}
+										title={book.title}
+										authors={book.authors}
+									/>
+								);
+							}
+						})}
 				</div>
 			</PerfectScrollbar>
 		</div>

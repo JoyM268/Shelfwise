@@ -22,7 +22,7 @@ const genres = [
 	{ name: "Horror", src: "horror" },
 	{ name: "Historical Fiction", src: "historical fiction" },
 	{ name: "Young Adult", src: "young adult" },
-	{ name: "Children's Fiction", src: "childrens fiction" },
+	{ name: "Children's Fiction", src: "juvenile fiction" },
 	{ name: "Non-Fiction", src: "nonfiction" },
 	{ name: "Biography", src: "biography" },
 	{ name: "History", src: "history" },
@@ -70,7 +70,11 @@ export default function Explore({
 						exit={{ opacity: 0, height: 0 }}
 						transition={{ duration: 0.6 }}
 					>
-						<BookCarousel title="Search Results" />
+						<BookCarousel
+							title="Search Results"
+							search_query={search}
+							search={true}
+						/>
 					</motion.div>
 				)}
 			</AnimatePresence>
@@ -111,7 +115,11 @@ export default function Explore({
 						index === genres.length - 1 ? "mt-4 pb-12" : "mt-4"
 					} scroll-mt-24`}
 				>
-					<BookCarousel title={genre.name} />
+					<BookCarousel
+						title={genre.name}
+						search_query={genre.src}
+						search={false}
+					/>
 				</div>
 			))}
 		</div>

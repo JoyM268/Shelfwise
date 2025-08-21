@@ -56,7 +56,11 @@ export default function Home({
 				<Search search={search} handleSearch={handleSearch} />
 			</form>
 			<div className="sm:min-w-11/12 sm:max-w-11/12 w-full mt-5 pl-2 pb-8">
-				<BookCarousel title="Recently Published" />
+				<BookCarousel
+					title="Top Books"
+					search_query="top"
+					search={false}
+				/>
 			</div>
 		</div>
 	);
