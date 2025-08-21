@@ -39,7 +39,7 @@ export default function Book({
 			<NavLink to={`/book/${id}`}>
 				<img
 					src={src}
-					className="w-36 h-50 sm:w-40 rounded-xs hover:scale-[1.008] cursor-pointer transition-all duration-300"
+					className="w-36 h-52 sm:w-40 rounded-xs hover:scale-[1.008] cursor-pointer transition-all duration-300"
 				/>
 			</NavLink>
 			<span className="text-[12px] sm:text-[13px] font-semibold mt-3 cursor-pointer hover:text-gray-700 transition-all duration-300">
