@@ -73,7 +73,6 @@ export default function Explore({
 						<BookCarousel
 							title="Search Results"
 							search_query={search}
-							search={true}
 						/>
 					</motion.div>
 				)}
@@ -115,11 +114,7 @@ export default function Explore({
 						index === genres.length - 1 ? "mt-4 pb-12" : "mt-4"
 					} scroll-mt-24`}
 				>
-					<BookCarousel
-						title={genre.name}
-						search_query={genre.src}
-						search={false}
-					/>
+					<BookCarousel title={genre.name} search_query={genre.src} />
 				</div>
 			))}
 		</div>

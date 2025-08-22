@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import Book from "./Book";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import BookSkeleton from "./BookSkeleton";
 
 interface BookCarouselProps {
 	title: string;
 	search_query: string;
-	search: boolean;
 }
 
 interface BookData {
@@ -22,7 +22,6 @@ interface BookData {
 export default function BookCarousel({
 	title,
 	search_query,
-	search = false,
 }: BookCarouselProps) {
 	const [books, setBooks] = useState<BookData[] | null>(null);
 	const [loading, setLoading] = useState(false);
@@ -32,10 +31,8 @@ export default function BookCarousel({
 		let url: string;
 		if (search_query === "top") {
 			url = "http://127.0.0.1:8000/api/books/top/";
-		} else if (!search) {
-			url = `http://127.0.0.1:8000/api/books/genre?q=${search_query}`;
 		} else {
-			url = `http://127.0.0.1:8000/api/books?q=${search_query}`;
+			url = `http://127.0.0.1:8000/api/books/genre?q=${search_query}`;
 		}
 
 		async function getBooks() {
@@ -49,39 +46,53 @@ export default function BookCarousel({
 				const data = await res.json();
 
 				setBooks(data);
-			} catch (err) {
-				setError(err as string);
+			} catch {
+				setError(
+					"An error occured while loading the data, please try again later."
+				);
 			} finally {
 				setLoading(false);
 			}
 		}
 
 		getBooks();
-	}, []);
+	}, [search_query]);
 
 	return (
 		<div className="flex flex-col gap-2">
 			<span className="font-semibold text-xl pl-3">{title}</span>
-			<PerfectScrollbar options={{ suppressScrollY: true }}>
-				<div className="grid grid-flow-col auto-cols-min pb-2 px-1 relative">
-					{!loading &&
-						!error &&
-						books &&
-						books.map((book) => {
-							if (book.src) {
-								return (
-									<Book
-										id={book.id}
-										key={book.id}
-										src={book.src?.thumbnail}
-										title={book.title}
-										authors={book.authors}
-									/>
-								);
-							}
-						})}
+			{!error && (
+				<PerfectScrollbar options={{ suppressScrollY: true }}>
+					<div className="grid grid-flow-col auto-cols-min pb-2 px-1 relative">
+						{!loading &&
+							books &&
+							books.map((book) => {
+								if (book.src) {
+									return (
+										<Book
+											id={book.id}
+											key={book.id}
+											src={book.src?.thumbnail}
+											title={book.title}
+											authors={book.authors}
+										/>
+									);
+								}
+							})}
+
+						{loading &&
+							[1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => {
+								return <BookSkeleton />;
+							})}
+					</div>
+				</PerfectScrollbar>
+			)}
+
+			{error && (
+				<div className="min-h-52 text-red-500 flex justify-center items-center">
+					{error}
 				</div>
-			</PerfectScrollbar>
+			)}
 		</div>
 	);
 }
