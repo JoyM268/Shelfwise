@@ -41,7 +41,7 @@ export default function BookRemoveWarning({
 						Cancel
 					</AlertDialogCancel>
 					<AlertDialogAction
-						className="cursor-pointer"
+						className="cursor-pointer bg-blue-500 hover:bg-blue-500/90"
 						onClick={() => {
 							if (handleBookRemove) handleBookRemove(id);
 						}}

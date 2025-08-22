@@ -13,7 +13,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import Signup from "./pages/Signup";
 
 function App() {
-	const isAuthenticated = false;
+	const isAuthenticated = true;
 	const [search, setSearch] = useState("");
 	const [results, setResults] = useState(false);
 	const [menu, setMenu] = useState(false);
