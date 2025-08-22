@@ -89,7 +89,7 @@ export default function BookCarousel({
 			)}
 
 			{error && (
-				<div className="min-h-52 text-red-500 flex justify-center items-center">
+				<div className="min-h-52 text-red-500 flex justify-center items-center text-center">
 					{error}
 				</div>
 			)}

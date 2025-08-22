@@ -61,8 +61,10 @@ export default function BookDetails({
 
 				const data = await res.json();
 				setBook(data);
-			} catch (err) {
-				console.log("Error:", err);
+			} catch {
+				setError(
+					"An error occured while loading the data, please try again later."
+				);
 			} finally {
 				setLoading(false);
 			}
@@ -108,7 +110,11 @@ export default function BookDetails({
 					</div>
 				</div>
 			)}
-			{error && <div>{error}</div>}
+			{error && (
+				<div className="text-red-500 mx-auto text-center flex items-center justify-center h-full sm:-m-20 -m-30 px-10">
+					{error}
+				</div>
+			)}
 			{!loading && !error && book && (
 				<>
 					<BookRemoveWarning
