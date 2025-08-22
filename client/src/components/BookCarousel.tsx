@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Book from "./Book";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import BookSkeleton from "./BookSkeleton";
+import BookSkeleton from "./skeleton/BookSkeleton";
 
 interface BookCarouselProps {
 	title: string;
@@ -81,8 +81,8 @@ export default function BookCarousel({
 							})}
 
 						{loading &&
-							[1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => {
-								return <BookSkeleton />;
+							[1, 2, 3, 4, 5, 6, 7, 8, 9].map((ele) => {
+								return <BookSkeleton key={ele} />;
 							})}
 					</div>
 				</PerfectScrollbar>

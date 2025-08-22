@@ -8,6 +8,7 @@ import { RadioDialog } from "@/components/RadioDialog";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import BookRemoveWarning from "@/components/BookRemoveWarning";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Book {
 	id: string;
@@ -81,7 +82,32 @@ export default function BookDetails({
 
 	return (
 		<>
-			{loading && <div>Loading</div>}
+			{loading && (
+				<div className="grid md:grid-cols-[minmax(200px,_auto)_1fr] px-6 mt-16 gap-12 grid-cols-1 pb-16">
+					<div className="mx-auto w-full">
+						<Skeleton className="h-90 w-60 rounded-lg mx-auto" />
+						<Skeleton className="w-full mt-4 h-10" />
+						<Skeleton className="w-full mt-3 h-10" />
+					</div>
+					<div className="sm:pr-20">
+						<Skeleton className="w-full h-12" />
+						<Skeleton className="w-full h-6 mt-4" />
+						<Skeleton className="mt-4 h-4 w-2/6" />
+						<div className="flex flex-wrap items-center mt-5 gap-2.5">
+							{[1, 2, 3, 4].map((ele) => {
+								return (
+									<Skeleton
+										key={ele}
+										className="rounded-lg w-20 h-6"
+									/>
+								);
+							})}
+						</div>
+						<Skeleton className="w-full h-28 mt-7" />
+						<Skeleton className="h-72 mt-7" />
+					</div>
+				</div>
+			)}
 			{error && <div>{error}</div>}
 			{!loading && !error && book && (
 				<>
@@ -93,15 +119,24 @@ export default function BookDetails({
 					/>
 					<div className="grid md:grid-cols-[minmax(200px,_auto)_1fr] px-6 pt-7 gap-12 grid-cols-1">
 						<div className="overflow-y-hidden flex justify-center flex-col md:justify-start items-center pt-2 gap-2">
-							<img
-								src={book.imageLinks.thumbnail}
-								alt={book.title}
-								className="w-50 sm:w-60 rounded-lg"
-							/>
+							{book.imageLinks && book.imageLinks.thumbnail && (
+								<img
+									src={book.imageLinks.thumbnail}
+									alt={book.title}
+									className="h-90 w-60 rounded-lg"
+								/>
+							)}
+
+							{(!book.imageLinks ||
+								!book.imageLinks.thumbnail) && (
+								<div className="h-90 w-60 rounded-lg flex justify-center items-center">
+									Unable to Load the Image
+								</div>
+							)}
 
 							{!isAuthenticated && (
 								<NavLink className="w-full" to="/login">
-									<Button classname="bg-blue-500 text-white mt-5 md:mt-3 hover:bg-blue-500/90">
+									<Button classname="bg-blue-500 text-white mt-1 md:mt-1 hover:bg-blue-500/90">
 										Login to Track Book
 									</Button>
 								</NavLink>
@@ -150,7 +185,10 @@ export default function BookDetails({
 							/>
 							<div className="mt-3 flex gap-3 flex-wrap text-sm mb-6">
 								{book.categories.map((category) => (
-									<BookCategory category={category} />
+									<BookCategory
+										category={category}
+										key={category}
+									/>
 								))}
 							</div>
 							<BookDescription
