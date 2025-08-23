@@ -1,15 +1,24 @@
 import PerfectScrollbar from "react-perfect-scrollbar";
 import BookCarousel from "@/components/BookCarousel";
+import SearchCarousel from "@/components/SearchCarousel";
 import Search from "@/components/Search";
-import { useRef, type ChangeEvent, type FormEvent } from "react";
+import {
+	useEffect,
+	useRef,
+	useState,
+	type ChangeEvent,
+	type FormEvent,
+} from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Tilt from "react-parallax-tilt";
+import type { BookData } from "@/components/BookCarousel";
 
 interface ExploreProps {
 	handleSearch(event: ChangeEvent<HTMLInputElement>): void;
 	search: string;
 	results: boolean;
-	showResults(): void;
+	query: string | null;
+	handleSubmit: (event?: FormEvent<HTMLFormElement>) => void;
 }
 
 const genres = [
@@ -38,9 +47,13 @@ export default function Explore({
 	search,
 	handleSearch,
 	results,
-	showResults,
+	query,
+	handleSubmit,
 }: ExploreProps) {
 	const refs = useRef<Record<string, HTMLDivElement | null>>({});
+	const [books, setBooks] = useState<BookData[] | null>(null);
+	const [searchLoading, setSearchLoading] = useState(false);
+	const [searchError, setSearchError] = useState<null | string>(null);
 
 	function handleGenreClick(src: string) {
 		const targetRef = refs.current[src];
@@ -49,12 +62,40 @@ export default function Explore({
 		}
 	}
 
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-		if (search) {
-			showResults();
+	useEffect(() => {
+		async function getBooks() {
+			setSearchLoading(true);
+			setSearchError(null);
+
+			try {
+				const res = await fetch(
+					`http://127.0.0.1:8000/api/books?q=${query}`
+				);
+
+				if (!res.ok) {
+					throw new Error(res.statusText);
+				}
+
+				const data = await res.json();
+
+				setBooks(data);
+			} catch (err) {
+				if (err instanceof Error) {
+					setSearchError(err.message);
+				} else {
+					setSearchError(
+						"An error occured while loading the data, please try again later."
+					);
+				}
+			} finally {
+				setSearchLoading(false);
+			}
 		}
-	}
+
+		if (query && query.trim()) {
+			getBooks();
+		}
+	}, [query]);
 
 	return (
 		<div className="px-6 pb-6 pt-5 w-full max-w-[1300px] mx-auto">
@@ -70,9 +111,10 @@ export default function Explore({
 						exit={{ opacity: 0, height: 0 }}
 						transition={{ duration: 0.6 }}
 					>
-						<BookCarousel
-							title="Search Results"
-							search_query={search}
+						<SearchCarousel
+							books={books}
+							loading={searchLoading}
+							error={searchError}
 						/>
 					</motion.div>
 				)}

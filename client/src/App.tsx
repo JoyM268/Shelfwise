@@ -1,5 +1,11 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import { useEffect, useState, useRef, type ChangeEvent } from "react";
+import {
+	useEffect,
+	useState,
+	useRef,
+	type ChangeEvent,
+	type FormEvent,
+} from "react";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Explore from "./pages/Explore";
@@ -19,6 +25,7 @@ function App() {
 	const [menu, setMenu] = useState(false);
 	const location = useLocation();
 	const scrollPosition = useRef(0);
+	const [query, setQuery] = useState<null | string>(null);
 
 	useEffect(() => {
 		setMenu(false);
@@ -63,17 +70,20 @@ function App() {
 		if (event) {
 			const value = event.target.value;
 			setSearch(value);
-			if (!value) {
-				setResults(false);
-			}
 		} else {
 			setSearch("");
-			setResults(false);
 		}
 	}
 
-	function showResults() {
-		setResults(true);
+	function handleSubmit(event?: FormEvent<HTMLFormElement>) {
+		if (event) {
+			event.preventDefault();
+		}
+
+		if (search) {
+			setQuery(search.trim());
+			setResults(true);
+		}
 	}
 
 	return (
@@ -101,7 +111,7 @@ function App() {
 								isAuthenticated={isAuthenticated}
 								search={search}
 								handleSearch={handleSearch}
-								showResults={showResults}
+								showResults={handleSubmit}
 							/>
 						}
 					/>
@@ -112,7 +122,8 @@ function App() {
 								search={search}
 								handleSearch={handleSearch}
 								results={results}
-								showResults={showResults}
+								query={query}
+								handleSubmit={handleSubmit}
 							/>
 						}
 					/>

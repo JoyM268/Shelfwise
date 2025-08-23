@@ -9,7 +9,7 @@ interface BookCarouselProps {
 	search_query: string;
 }
 
-interface BookData {
+export interface BookData {
 	id: string;
 	src: {
 		smallThumbnail: string;
