@@ -17,7 +17,7 @@ export default function Header({
 	setMenu,
 }: HeaderProps) {
 	return (
-		<div className="flex justify-between items-center whitespace-nowrap border-b border-solid border-b-gray-200 px-4 sm:pl-6 sm:pr-4 py-4 fixed w-screen z-50 top-0 bg-white select-none">
+		<div className="flex justify-between items-center whitespace-nowrap border-b border-solid border-b-gray-200 px-4 sm:pl-6 sm:pr-6 py-4 fixed w-screen z-50 top-0 bg-white select-none">
 			<NavLink
 				to="/"
 				className="text-gray-900 text-2xl font-semibold leading-tight cursor-pointer flex items-center"
@@ -110,7 +110,9 @@ export default function Header({
 						<MenuIcon />
 					</div>
 				) : (
-					<ProfilePhoto name="Joy Mascarenhas" />
+					<div className="mr-2">
+						<ProfilePhoto name="Joy Mascarenhas" />
+					</div>
 				)}
 			</div>
 		</div>

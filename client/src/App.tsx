@@ -19,7 +19,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import Signup from "./pages/Signup";
 
 function App() {
-	const isAuthenticated = true;
+	const isAuthenticated = false;
 	const [search, setSearch] = useState("");
 	const [results, setResults] = useState(false);
 	const [menu, setMenu] = useState(false);
@@ -106,7 +106,12 @@ function App() {
 			/>
 			<div className="pt-20 h-screen relative">
 				<AnimatePresence>
-					{menu && <Menu isAuthenticated={isAuthenticated} />}
+					{menu && (
+						<Menu
+							isAuthenticated={isAuthenticated}
+							setMenu={setMenu}
+						/>
+					)}
 				</AnimatePresence>
 				<Routes>
 					<Route

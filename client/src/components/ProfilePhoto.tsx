@@ -17,15 +17,14 @@ export default function ProfilePhoto({
 			.split(" ")
 			.map((word) => word[0])
 			.join("")
-			.toUpperCase();
+			.toUpperCase()
+			.slice(0, 2);
 	}, [name]);
 
 	return (
 		<Avatar className="cursor-pointer w-9 h-9 border border-gray-400 shadow">
 			<AvatarImage src={imgSrc} alt={imgAlt} />
-			<AvatarFallback className="border border-gray-100 shadow">
-				{fallback}
-			</AvatarFallback>
+			<AvatarFallback>{fallback}</AvatarFallback>
 		</Avatar>
 	);
 }
