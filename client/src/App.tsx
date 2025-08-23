@@ -69,8 +69,13 @@ function App() {
 	function handleSearch(event?: ChangeEvent<HTMLInputElement>) {
 		if (event) {
 			const value = event.target.value;
-			setSearch(value);
+			if (value) setSearch(value);
+			else {
+				setSearch("");
+				setResults(false);
+			}
 		} else {
+			setResults(false);
 			setSearch("");
 		}
 	}
