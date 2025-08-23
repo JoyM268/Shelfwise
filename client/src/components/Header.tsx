@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import clsx from "clsx";
+import MenuDropdown from "./MenuDropdown";
+import ProfilePhoto from "./ProfilePhoto";
 
 interface HeaderProps {
 	isAuthenticated: boolean;
@@ -15,7 +17,7 @@ export default function Header({
 	setMenu,
 }: HeaderProps) {
 	return (
-		<div className="flex justify-between items-center whitespace-nowrap border-b border-solid border-b-gray-200 px-4 sm:pl-6 sm:pr-8 py-4 fixed w-screen z-50 top-0 bg-white select-none">
+		<div className="flex justify-between items-center whitespace-nowrap border-b border-solid border-b-gray-200 px-4 sm:pl-6 sm:pr-4 py-4 fixed w-screen z-50 top-0 bg-white select-none">
 			<NavLink
 				to="/"
 				className="text-gray-900 text-2xl font-semibold leading-tight cursor-pointer flex items-center"
@@ -90,16 +92,26 @@ export default function Header({
 				)}
 
 				{isAuthenticated && (
-					<button className="cursor-pointer bg-blue-500 text-white p-2 rounded-md hover:scale-[0.97] shadow">
-						Logout
-					</button>
+					<MenuDropdown>
+						<ProfilePhoto name="Joy Mascarenhas" />
+					</MenuDropdown>
 				)}
 			</nav>
 			<div
 				onClick={() => setMenu((menu) => !menu)}
-				className="cursor-pointer p-2 hover:bg-gray-300/30 rounded-full transition-all duration-300 sm:hidden"
+				className="cursor-pointer sm:hidden"
 			>
-				{menu ? <CloseIcon /> : <MenuIcon />}
+				{menu ? (
+					<div className="p-2 hover:bg-gray-300/30 rounded-full transition-all duration-300">
+						<CloseIcon />
+					</div>
+				) : !isAuthenticated ? (
+					<div className="p-2 hover:bg-gray-300/30 rounded-full transition-all duration-300">
+						<MenuIcon />
+					</div>
+				) : (
+					<ProfilePhoto name="Joy Mascarenhas" />
+				)}
 			</div>
 		</div>
 	);
