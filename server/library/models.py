@@ -1,14 +1,12 @@
 from django.db import models
 from user.models import User
 from books.models import Book
-# Create your models here.
-    
 
 class Library(models.Model):
     READING_STATUS_CHOICES = [
         ('PR', 'Plan To Read'),
         ('R', 'Reading'),
-        ('C', 'Completed'),
+        ('F', 'Finished'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="library")
@@ -21,3 +19,6 @@ class Library(models.Model):
 
     def __str__(self):
         return f"{self.user.username} | {self.book.title}"
+    
+    def status_info(self):
+        return dict(self.READING_STATUS_CHOICES)[self.status]

@@ -8,6 +8,7 @@ class Category(models.Model):
         return self.name
 
 class Book(models.Model):
+    book_id = models.CharField(max_length=100, primary_key=True, unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     authors = models.JSONField(default=list, blank=True)
@@ -23,7 +24,7 @@ class Book(models.Model):
     small_thumbnail = models.URLField(max_length=500, null=True, blank=True)
     thumbnail = models.URLField(max_length=500, null=True, blank=True)  
     language = models.CharField(max_length=30, default="English")
-    categories = models.ManyToManyField(Category, related_name="books", null=True, blank=True)
+    categories = models.ManyToManyField(Category, related_name="books", blank=True)
 
     def __str__(self):
         return self.title

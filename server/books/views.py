@@ -7,7 +7,16 @@ from django.conf import settings
 
 api_key = settings.GOOGLE_API_KEY
 
-class getBookDetails(APIView):
+def filter_book_details(book):
+    details = book.get("volumeInfo", {})
+    return {
+        "id": book.get("id"),
+        "src": details.get("imageLinks"),
+        "title": details.get("title"),
+        "authors": details.get("authors")
+    }
+
+class GetBookDetails(APIView):
     def get(self, request, bookId):
         url = f"https://www.googleapis.com/books/v1/volumes/{bookId}?key={api_key}"
         try:
@@ -61,7 +70,7 @@ class getBookDetails(APIView):
                 }
 
                 return Response(bookDetails, status=status.HTTP_200_OK)
-            elif res.status_code == 404:
+            elif res.status_code == 404 or res.status_code == 503:
                 return Response({"error": "Book not found. Invalid ID."}, status=status.HTTP_404_NOT_FOUND)
             else:
                 return Response(
@@ -73,17 +82,8 @@ class getBookDetails(APIView):
                 {"error": f"Could not connect to the Google Books API: {e}"},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE
             )
-        
-def filterBookDetails(book):
-    details = book.get("volumeInfo", {})
-    return {
-        "id": book.get("id"),
-        "src": details.get("imageLinks"),
-        "title": details.get("title"),
-        "authors": details.get("authors")
-    }
 
-class getBooksByGenre(APIView):
+class GetBooksByGenre(APIView):
     def get(self, request):
         search_query = self.request.query_params.get('q', None)
         if search_query:
@@ -93,11 +93,15 @@ class getBooksByGenre(APIView):
                 res = requests.get(url)
                 if res.status_code == 200:
                     data = res.json()
+
+                    if data.get("totalItems") == 0:
+                        return Response({"error": "Invalid Genre."}, status=status.HTTP_404_NOT_FOUND)
+                    
                     bookList = data.get("items", [])
-                    newBookList = map(filterBookDetails, bookList)
+                    newBookList = map(filter_book_details, bookList)
                     return Response(newBookList, status=status.HTTP_200_OK)
                 elif res.status_code == 400:
-                    return Response({"error": "Invalid Genre."}, status=status.HTTP_404_NOT_FOUND)     
+                    return Response({"error": "Invalid Genre."}, status=status.HTTP_404_NOT_FOUND)
                 else:
                     return Response(
                         {"error": "Failed to retrieve books from Google Books."},
@@ -111,7 +115,7 @@ class getBooksByGenre(APIView):
         else:
             return Response({"error": "Required parameter: q"}, status=status.HTTP_400_BAD_REQUEST)
         
-class getTopBooks(APIView):
+class GetTopBooks(APIView):
     def get(self, request):
         url = f"https://www.googleapis.com/books/v1/volumes?q=subject:\"science fiction\"&maxResults=40&key={api_key}"
         try:
@@ -120,7 +124,7 @@ class getTopBooks(APIView):
             if res.status_code == 200:
                 data = res.json()
                 bookList = data.get("items", [])
-                newBookList = map(filterBookDetails, bookList)
+                newBookList = map(filter_book_details, bookList)
                 return Response(newBookList, status=status.HTTP_200_OK)
             else:
                 return Response(
@@ -132,7 +136,7 @@ class getTopBooks(APIView):
                 {"error": f"Could not connect to the Google Books API: {e}"},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE)
         
-class getBooksByQuery(APIView):
+class GetBooksByQuery(APIView):
     def get(self, request):
         search_query = self.request.query_params.get('q', None)
         if search_query:
@@ -141,11 +145,14 @@ class getBooksByQuery(APIView):
             
             try:
                 res = requests.get(url)
-                
                 if res.status_code == 200:
                     data = res.json()
+                    
+                    if data.get("totalItems") == 0:
+                        return Response({"error": "Book Not Found"}, status=status.HTTP_404_NOT_FOUND)
+                                 
                     bookList = data.get("items", [])
-                    newBookList = map(filterBookDetails, bookList)
+                    newBookList = map(filter_book_details, bookList)
                     return Response(newBookList, status=status.HTTP_200_OK)
                 elif res.status_code == 400:
                     return Response({"error": "Book Not Found"}, status=status.HTTP_404_NOT_FOUND)
