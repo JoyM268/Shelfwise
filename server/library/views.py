@@ -6,6 +6,8 @@ from .models import Library
 from .serializers import LibrarySerializer, UpdateStatusSerializer, BookIdSerializer
 from books.models import Book, Category
 from django.conf import settings
+from rest_framework import permissions
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 api_key = settings.GOOGLE_API_KEY
 
@@ -26,6 +28,9 @@ def filter_book_details(book):
     }
 
 class UserBooks(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication] 
+
     def get(self, request):
         try:
             instance = Library.objects.filter(user=request.user)
