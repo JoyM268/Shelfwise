@@ -136,6 +136,7 @@ export default function Library() {
 										section === tab,
 								})}
 								onClick={handleSectionClick}
+								key={tab}
 							>
 								{tab}
 							</div>

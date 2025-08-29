@@ -3,15 +3,15 @@ import { NavLink } from "react-router-dom";
 import { motion } from "motion/react";
 import { useState } from "react";
 import LogoutWarning from "./LogoutWarning";
+import { useAuth } from "@/context/useAuth";
 
 export default function Menu({
-	isAuthenticated,
 	setMenu,
 }: {
-	isAuthenticated: boolean;
 	setMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const [popup, setPopup] = useState(false);
+	const { isAuthenticated } = useAuth();
 
 	return (
 		<>

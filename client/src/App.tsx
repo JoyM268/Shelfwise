@@ -17,9 +17,9 @@ import Menu from "./components/Menu";
 import Login from "./pages/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Signup from "./pages/Signup";
+import AuthProvider from "./components/AuthProvider";
 
 function App() {
-	const isAuthenticated = false;
 	const [search, setSearch] = useState("");
 	const [results, setResults] = useState(false);
 	const [menu, setMenu] = useState(false);
@@ -92,71 +92,52 @@ function App() {
 	}
 
 	return (
-		<div className="relative bg-white">
-			<Header
-				isAuthenticated={isAuthenticated}
-				menu={menu}
-				setMenu={setMenu}
-			/>
-			<Toaster
-				position="top-center"
-				toastOptions={{
-					duration: 1500,
-				}}
-			/>
-			<div className="pt-20 h-screen relative">
-				<AnimatePresence>
-					{menu && (
-						<Menu
-							isAuthenticated={isAuthenticated}
-							setMenu={setMenu}
+		<AuthProvider>
+			<div className="relative bg-white">
+				<Header menu={menu} setMenu={setMenu} />
+				<Toaster
+					position="top-center"
+					toastOptions={{
+						duration: 1500,
+					}}
+				/>
+				<div className="pt-20 h-screen relative">
+					<AnimatePresence>
+						{menu && <Menu setMenu={setMenu} />}
+					</AnimatePresence>
+					<Routes>
+						<Route
+							path="/"
+							element={
+								<Home
+									search={search}
+									handleSearch={handleSearch}
+									showResults={handleSubmit}
+								/>
+							}
 						/>
-					)}
-				</AnimatePresence>
-				<Routes>
-					<Route
-						path="/"
-						element={
-							<Home
-								isAuthenticated={isAuthenticated}
-								search={search}
-								handleSearch={handleSearch}
-								showResults={handleSubmit}
-							/>
-						}
-					/>
-					<Route
-						path="/explore"
-						element={
-							<Explore
-								search={search}
-								handleSearch={handleSearch}
-								results={results}
-								query={query}
-								handleSubmit={handleSubmit}
-							/>
-						}
-					/>
-					<Route
-						element={
-							<ProtectedRoutes
-								isAuthenticated={isAuthenticated}
-							/>
-						}
-					>
-						<Route path="/library" element={<Library />} />
-					</Route>
-					<Route
-						path="/book/:bookId"
-						element={
-							<BookDetails isAuthenticated={isAuthenticated} />
-						}
-					/>
-					<Route path="/login" element={<Login />} />
-					<Route path="/signup" element={<Signup />} />
-				</Routes>
+						<Route
+							path="/explore"
+							element={
+								<Explore
+									search={search}
+									handleSearch={handleSearch}
+									results={results}
+									query={query}
+									handleSubmit={handleSubmit}
+								/>
+							}
+						/>
+						<Route element={<ProtectedRoutes />}>
+							<Route path="/library" element={<Library />} />
+						</Route>
+						<Route path="/book/:bookId" element={<BookDetails />} />
+						<Route path="/login" element={<Login />} />
+						<Route path="/signup" element={<Signup />} />
+					</Routes>
+				</div>
 			</div>
-		</div>
+		</AuthProvider>
 	);
 }
 

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import BookRemoveWarning from "@/components/BookRemoveWarning";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/context/useAuth";
 
 interface Book {
 	id: string;
@@ -34,11 +35,7 @@ interface Book {
 	language: string;
 }
 
-export default function BookDetails({
-	isAuthenticated,
-}: {
-	isAuthenticated: boolean;
-}) {
+export default function BookDetails() {
 	const { bookId } = useParams();
 	const navigate = useNavigate();
 	const [bookStatus, setBookStatus] = useState("");
@@ -46,6 +43,7 @@ export default function BookDetails({
 	const [book, setBook] = useState<Book | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const { isAuthenticated } = useAuth();
 
 	useEffect(() => {
 		const url = `http://127.0.0.1:8000/api/books/${bookId}`;

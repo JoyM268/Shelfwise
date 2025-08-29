@@ -14,7 +14,7 @@ import { z } from "zod";
 import { NavLink } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function Auth() {
+export default function Login() {
 	const formSchema = z.object({
 		username: z.string().min(2, {
 			message: "Username must be at least 2 characters.",

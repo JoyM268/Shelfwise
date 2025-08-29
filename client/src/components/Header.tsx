@@ -4,18 +4,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import clsx from "clsx";
 import MenuDropdown from "./MenuDropdown";
 import ProfilePhoto from "./ProfilePhoto";
+import { useAuth } from "@/context/useAuth";
 
 interface HeaderProps {
-	isAuthenticated: boolean;
 	menu: boolean;
 	setMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Header({
-	isAuthenticated,
-	menu,
-	setMenu,
-}: HeaderProps) {
+export default function Header({ menu, setMenu }: HeaderProps) {
+	const { isAuthenticated } = useAuth();
+
 	return (
 		<div className="flex justify-between items-center whitespace-nowrap border-b border-solid border-b-gray-200 px-4 sm:pl-6 sm:pr-6 py-4 fixed w-screen z-50 top-0 bg-white select-none">
 			<NavLink
