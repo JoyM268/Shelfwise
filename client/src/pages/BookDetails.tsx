@@ -43,7 +43,7 @@ export default function BookDetails() {
 	const [book, setBook] = useState<Book | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const { isAuthenticated } = useAuth();
+	const { user } = useAuth();
 
 	useEffect(() => {
 		const url = `http://127.0.0.1:8000/api/books/${bookId}`;
@@ -138,7 +138,7 @@ export default function BookDetails() {
 								</div>
 							)}
 
-							{!isAuthenticated && (
+							{!user && (
 								<NavLink className="w-full" to="/login">
 									<Button classname="bg-blue-500 text-white mt-1 md:mt-1 hover:bg-blue-500/90">
 										Login to Track Book
@@ -146,7 +146,7 @@ export default function BookDetails() {
 								</NavLink>
 							)}
 
-							{isAuthenticated && (
+							{user && (
 								<>
 									<RadioDialog
 										value={bookStatus}

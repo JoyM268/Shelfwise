@@ -5,13 +5,9 @@ import { useState } from "react";
 import LogoutWarning from "./LogoutWarning";
 import { useAuth } from "@/context/useAuth";
 
-export default function Menu({
-	setMenu,
-}: {
-	setMenu: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function Menu() {
 	const [popup, setPopup] = useState(false);
-	const { isAuthenticated } = useAuth();
+	const { user, logout } = useAuth();
 
 	return (
 		<>
@@ -49,7 +45,7 @@ export default function Menu({
 					>
 						Home
 					</NavLink>
-					{isAuthenticated && (
+					{user && (
 						<NavLink
 							to="/library"
 							className={({ isActive }) =>
@@ -79,7 +75,7 @@ export default function Menu({
 					>
 						Explore
 					</NavLink>
-					{!isAuthenticated && (
+					{!user && (
 						<>
 							<NavLink
 								to="/login"
@@ -111,7 +107,7 @@ export default function Menu({
 							</NavLink>
 						</>
 					)}
-					{isAuthenticated && (
+					{user && (
 						<li
 							className="list-none p-2 cursor-pointer bg-blue-500 text-white hover:bg-blue-600/90 transition-all duration-300"
 							onClick={() => {
@@ -126,10 +122,7 @@ export default function Menu({
 			<LogoutWarning
 				open={popup}
 				onOpenChange={setPopup}
-				handleLogout={() => {
-					console.log("Logged Out");
-					setMenu(false);
-				}}
+				handleLogout={logout}
 			/>
 		</>
 	);

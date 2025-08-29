@@ -12,7 +12,7 @@ interface HomeProps {
 
 export default function Home({ handleSearch, search, showResults }: HomeProps) {
 	const navigate = useNavigate();
-	const { isAuthenticated } = useAuth();
+	const { user } = useAuth();
 
 	function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -39,10 +39,10 @@ export default function Home({ handleSearch, search, showResults }: HomeProps) {
 					explore millions of titles to find your next great read.
 				</p>
 				<NavLink
-					to={isAuthenticated ? "/library" : "/login"}
+					to={user ? "/library" : "/login"}
 					className="bg-blue-500 px-4 rounded-xl text-white py-3 text-sm font-semibold mt-1 shadow-blue-200 relative"
 				>
-					{isAuthenticated ? "View My Bookshelf" : "Get Started"}
+					{user ? "View My Bookshelf" : "Get Started"}
 				</NavLink>
 			</div>
 			<form

@@ -12,7 +12,7 @@ interface HeaderProps {
 }
 
 export default function Header({ menu, setMenu }: HeaderProps) {
-	const { isAuthenticated } = useAuth();
+	const { user } = useAuth();
 
 	return (
 		<div className="flex justify-between items-center whitespace-nowrap border-b border-solid border-b-gray-200 px-4 sm:pl-6 sm:pr-6 py-4 fixed w-screen z-50 top-0 bg-white select-none">
@@ -35,7 +35,7 @@ export default function Header({ menu, setMenu }: HeaderProps) {
 					Home
 				</NavLink>
 
-				{isAuthenticated && (
+				{user && (
 					<NavLink
 						to="/library"
 						className={({ isActive }) =>
@@ -60,7 +60,7 @@ export default function Header({ menu, setMenu }: HeaderProps) {
 					Explore
 				</NavLink>
 
-				{!isAuthenticated && (
+				{!user && (
 					<>
 						<NavLink
 							to="/login"
@@ -89,9 +89,9 @@ export default function Header({ menu, setMenu }: HeaderProps) {
 					</>
 				)}
 
-				{isAuthenticated && (
+				{user && (
 					<MenuDropdown>
-						<ProfilePhoto name="Joy Mascarenhas" />
+						<ProfilePhoto name={user.username} />
 					</MenuDropdown>
 				)}
 			</nav>
@@ -103,7 +103,7 @@ export default function Header({ menu, setMenu }: HeaderProps) {
 					<div className="p-2 hover:bg-gray-300/30 rounded-full transition-all duration-300">
 						<CloseIcon />
 					</div>
-				) : !isAuthenticated ? (
+				) : !user ? (
 					<div className="p-2 hover:bg-gray-300/30 rounded-full transition-all duration-300">
 						<MenuIcon />
 					</div>

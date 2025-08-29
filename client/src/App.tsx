@@ -102,9 +102,7 @@ function App() {
 					}}
 				/>
 				<div className="pt-20 h-screen relative">
-					<AnimatePresence>
-						{menu && <Menu setMenu={setMenu} />}
-					</AnimatePresence>
+					<AnimatePresence>{menu && <Menu />}</AnimatePresence>
 					<Routes>
 						<Route
 							path="/"
