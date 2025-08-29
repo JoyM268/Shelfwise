@@ -17,11 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export default function Signup() {
 	const formSchema = z
 		.object({
-			name: z.string().min(2, {
-				message: "Name must be at least 2 characters.",
-			}),
-			email: z.string().email({
-				message: "Invalid email address.",
+			username: z.string().min(2, {
+				message: "Username must be at least 2 characters.",
 			}),
 			password: z.string().min(8, {
 				message: "Password must be at least 8 characters.",
@@ -44,8 +41,7 @@ export default function Signup() {
 		resolver: zodResolver(formSchema),
 		mode: "onChange",
 		defaultValues: {
-			name: "",
-			email: "",
+			username: "",
 			password: "",
 			confirmPassword: "",
 		},
@@ -72,15 +68,15 @@ export default function Signup() {
 				>
 					<FormField
 						control={form.control}
-						name="name"
+						name="username"
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel className="text-xs sm:text-sm">
-									Name
+									Username
 								</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="Your Name"
+										placeholder="Username"
 										{...field}
 										className="text-sm sm:text-base"
 									/>
@@ -90,25 +86,6 @@ export default function Signup() {
 						)}
 					/>
 
-					<FormField
-						control={form.control}
-						name="email"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel className="text-xs sm:text-sm">
-									Email Address
-								</FormLabel>
-								<FormControl>
-									<Input
-										placeholder="you@example.com"
-										{...field}
-										className="text-sm sm:text-base"
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
 					<FormField
 						control={form.control}
 						name="password"

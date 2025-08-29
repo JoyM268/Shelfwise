@@ -16,8 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function Auth() {
 	const formSchema = z.object({
-		email: z.string().email({
-			message: "Invalid email address.",
+		username: z.string().min(2, {
+			message: "Username must be at least 2 characters.",
 		}),
 		password: z.string().min(8, {
 			message: "Password must be at least 8 characters.",
@@ -28,7 +28,7 @@ export default function Auth() {
 		resolver: zodResolver(formSchema),
 		mode: "onChange",
 		defaultValues: {
-			email: "",
+			username: "",
 			password: "",
 		},
 	});
@@ -54,15 +54,15 @@ export default function Auth() {
 				>
 					<FormField
 						control={form.control}
-						name="email"
+						name="username"
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel className="text-xs sm:text-sm">
-									Email Address
+									Username
 								</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="you@example.com"
+										placeholder="Username"
 										{...field}
 										className="text-sm sm:text-base"
 									/>
