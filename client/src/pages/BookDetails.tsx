@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import BookRemoveWarning from "@/components/BookRemoveWarning";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/context/useAuth";
+import axios, { AxiosError } from "axios";
+import axiosInstance from "@/api/config";
 
 interface Book {
 	id: string;
@@ -46,29 +48,36 @@ export default function BookDetails() {
 	const { user } = useAuth();
 
 	useEffect(() => {
-		const url = `http://127.0.0.1:8000/api/books/${bookId}`;
+		const url = `/api/books/${bookId}`;
+		const controller = new AbortController();
+		let isCancelled = false;
 
 		async function getBook() {
 			setLoading(true);
 			setError(null);
 			try {
-				const res = await fetch(url);
-				if (!res.ok) {
-					throw new Error("An error occured");
+				const res = await axiosInstance.get(url, {
+					signal: controller.signal,
+				});
+				setBook(res.data);
+			} catch (err) {
+				if (axios.isCancel(err)) {
+					isCancelled = true;
+				} else if (err instanceof AxiosError) {
+					setError(err.response?.data?.message || err.message);
+				} else {
+					setError(
+						"An error occured while loading the data, please try again later."
+					);
 				}
-
-				const data = await res.json();
-				setBook(data);
-			} catch {
-				setError(
-					"An error occured while loading the data, please try again later."
-				);
 			} finally {
-				setLoading(false);
+				if (!isCancelled) setLoading(false);
 			}
 		}
 
 		getBook();
+
+		return () => controller.abort();
 	}, [bookId]);
 
 	function back() {

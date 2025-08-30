@@ -3,6 +3,8 @@ import Book from "./Book";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import BookSkeleton from "./skeleton/BookSkeleton";
+import axiosInstance from "@/api/config";
+import axios, { AxiosError } from "axios";
 
 interface BookCarouselProps {
 	title: string;
@@ -30,32 +32,41 @@ export default function BookCarousel({
 	useEffect(() => {
 		let url: string;
 		if (search_query === "top") {
-			url = "http://127.0.0.1:8000/api/books/top/";
+			url = "/api/books/top/";
 		} else {
-			url = `http://127.0.0.1:8000/api/books/genre?q=${search_query}`;
+			url = `/api/books/genre?q=${search_query}`;
 		}
+
+		const controller = new AbortController();
+		let isCancelled = false;
 
 		async function getBooks() {
 			setLoading(true);
 			setError(null);
 			try {
-				const res = await fetch(url);
-				if (!res.ok) {
-					throw new Error(res.statusText);
-				}
-				const data = await res.json();
+				const res = await axiosInstance.get(url, {
+					signal: controller.signal,
+				});
 
-				setBooks(data);
-			} catch {
-				setError(
-					"An error occured while loading the data, please try again later."
-				);
+				setBooks(res.data);
+			} catch (err) {
+				if (axios.isCancel(err)) {
+					isCancelled = true;
+				} else if (err instanceof AxiosError) {
+					setError(err.response?.data?.message || err.message);
+				} else {
+					setError(
+						"An error occured while loading the data, please try again later."
+					);
+				}
 			} finally {
-				setLoading(false);
+				if (!isCancelled) setLoading(false);
 			}
 		}
 
 		getBooks();
+
+		return () => controller.abort();
 	}, [search_query]);
 
 	return (
