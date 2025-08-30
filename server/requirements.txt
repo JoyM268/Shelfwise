@@ -1,3 +1,4 @@
+pip>=24.0
 asgiref==3.9.1
 certifi==2025.8.3
 charset-normalizer==3.4.3
