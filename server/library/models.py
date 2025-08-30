@@ -20,5 +20,6 @@ class Library(models.Model):
     def __str__(self):
         return f"{self.user.username} | {self.book.title}"
     
+    @property
     def status_info(self):
         return dict(self.READING_STATUS_CHOICES)[self.status]
