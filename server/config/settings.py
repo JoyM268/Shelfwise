@@ -108,45 +108,11 @@ DATABASES = {
     }
 }
 
+CORS_PREFLIGHT_MAX_AGE = 86400
+
 CORS_ALLOWED_ORIGINS = [
-    "https://shelfwise-library.vercel.app",    
-    "https://shelfwise-be3f.onrender.com", 
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
-]
-
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_ALL_ORIGINS = False
-
-CORS_ALLOWED_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
-
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
-
-CSRF_TRUSTED_ORIGINS = [
     "https://shelfwise-library.vercel.app",
-    "https://shelfwise-be3f.onrender.com", 
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
 ]
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
