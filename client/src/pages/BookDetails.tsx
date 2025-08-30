@@ -95,9 +95,7 @@ export default function BookDetails() {
 				setBookStatus("");
 				toast("The book has been removed from library.");
 			}
-		} catch (err) {
-			if (err instanceof AxiosError)
-				console.error("Failed to remove book:", err.message);
+		} catch {
 			toast.error("Could not remove the book. Please try again.");
 		}
 	}

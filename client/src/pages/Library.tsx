@@ -6,7 +6,7 @@ import EmptyMessage from "@/components/EmptyMessage";
 import { toast } from "sonner";
 import Loader from "@/components/ui/loader";
 import library from "@/api/library";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 export type BookStatus = "Reading" | "Plan to Read" | "Finished";
 
@@ -43,12 +43,8 @@ export default function Library() {
 			} catch (err) {
 				if (axios.isCancel(err)) {
 					isCanceled = true;
-				} else if (err instanceof AxiosError) {
-					setError(err.response?.data?.message || err.message);
 				} else {
-					setError(
-						"An error occured while loading the data, please try again later."
-					);
+					setError("An error occured, please try again later.");
 				}
 			} finally {
 				if (!isCanceled) setLoading(false);
@@ -77,9 +73,7 @@ export default function Library() {
 			await library.changeStatus(id, status);
 			setBooks(newBooks);
 			toast(`The book has been added to '${status}'.`);
-		} catch (err) {
-			if (err instanceof AxiosError)
-				console.error("Failed to remove book:", err.message);
+		} catch {
 			toast.error("Failed to update book status. Please try again.");
 		}
 	}
@@ -98,9 +92,7 @@ export default function Library() {
 			await library.deleteBook(id);
 			setBooks(newBooks);
 			toast("The book has been removed from library.");
-		} catch (err) {
-			if (err instanceof AxiosError)
-				console.error("Failed to remove book:", err.message);
+		} catch {
 			toast.error("Could not remove the book. Please try again.");
 		}
 	}

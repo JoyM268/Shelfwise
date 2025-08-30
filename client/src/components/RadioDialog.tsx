@@ -49,8 +49,8 @@ export function RadioDialog({
 					toast(`The book has been added to '${newOption}'.`);
 				}
 			}
-		} catch (err) {
-			console.log(err);
+		} catch {
+			toast(`An error occured, please try again later.`);
 		}
 	}
 
