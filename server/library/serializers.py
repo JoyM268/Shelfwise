@@ -3,7 +3,7 @@ from rest_framework import serializers
 from books.serializers import BookSerializer
 
 READING_STATUS_CHOICES = [
-    ('PR', 'Plan To Read'),
+    ('PR', 'Plan to Read'),
     ('R', 'Reading'),
     ('F', 'Finished'),
 ]

@@ -4,7 +4,7 @@ from books.models import Book
 
 class Library(models.Model):
     READING_STATUS_CHOICES = [
-        ('PR', 'Plan To Read'),
+        ('PR', 'Plan to Read'),
         ('R', 'Reading'),
         ('F', 'Finished'),
     ]

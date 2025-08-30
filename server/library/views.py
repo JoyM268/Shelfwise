@@ -58,19 +58,6 @@ class UserBooks(APIView):
             except Exception:
                 return Response({"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
-    def delete(self, request):
-        serializer = BookIdSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            book_id = serializer.validated_data["id"]
-            try:
-                instance = Library.objects.get(user=request.user, book_id=book_id)
-                instance.delete()
-                return Response({"message": "Book deleted successfully."}, status=status.HTTP_200_OK)
-            except Library.DoesNotExist:
-                return Response({"error": "Book not found for this user."}, status=status.HTTP_404_NOT_FOUND)
-            except Exception:
-                return Response({"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
     def post(self, request):
         serializer = BookIdSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -124,3 +111,14 @@ class UserBooks(APIView):
             except Exception as e:
                 print(e)
                 return Response({"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+class DeleteBook(APIView):
+    def delete(self, request, book_id):
+        try:
+            instance = Library.objects.get(user=request.user, book_id=book_id)
+            instance.delete()
+            return Response({"message": "Book deleted successfully."}, status=status.HTTP_200_OK)
+        except Library.DoesNotExist:
+            return Response({"error": "Book not found for this user."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception:
+            return Response({"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -5,10 +5,12 @@ import Book from "@/components/Book";
 import EmptyMessage from "@/components/EmptyMessage";
 import { toast } from "sonner";
 import Loader from "@/components/ui/loader";
+import library from "@/api/library";
+import axios, { AxiosError } from "axios";
 
 export type BookStatus = "Reading" | "Plan to Read" | "Finished";
 
-interface BookDataProps {
+export interface BookDataProps {
 	id: string;
 	src: string;
 	title: string;
@@ -19,39 +21,6 @@ interface BookDataProps {
 	description: string;
 }
 
-const bookData: BookDataProps[] = [
-	{
-		id: "1",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-		status: "Reading",
-		progress: 0,
-		total: 200,
-		description: "Hello World",
-	},
-	{
-		id: "2",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "Hello",
-		authors: ["Ayman Elmassarawy"],
-		status: "Plan to Read",
-		progress: 0,
-		total: 200,
-		description: "Hello World",
-	},
-	{
-		id: "3",
-		src: "http://books.google.com/books/content?id=9Y91EQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-		title: "How to Influence Others and Earn Their Trust",
-		authors: ["Ayman Elmassarawy"],
-		status: "Reading",
-		progress: 0,
-		total: 200,
-		description: "Hello World",
-	},
-];
-
 export default function Library() {
 	const [section, setSection] = useState("All Books");
 	const [books, setBooks] = useState<null | BookDataProps[]>(null);
@@ -61,34 +30,37 @@ export default function Library() {
 	const [error, setError] = useState<null | string>(null);
 
 	useEffect(() => {
+		const controller = new AbortController();
+		let isCanceled = false;
+
 		async function getLibrary() {
 			setLoading(true);
 			setError(null);
 
 			try {
-				await new Promise((resolve, reject) => {
-					setTimeout(() => {
-						setBooks(bookData);
-						resolve(1);
-					}, 5000);
-				});
+				const res = await library.getBooks(controller.signal);
+				setBooks(res);
 			} catch (err) {
-				if (err instanceof Error) {
-					setError(err.message);
+				if (axios.isCancel(err)) {
+					isCanceled = true;
+				} else if (err instanceof AxiosError) {
+					setError(err.response?.data?.message || err.message);
 				} else {
 					setError(
 						"An error occured while loading the data, please try again later."
 					);
 				}
 			} finally {
-				setLoading(false);
+				if (!isCanceled) setLoading(false);
 			}
 		}
 
 		getLibrary();
+
+		return () => controller.abort();
 	}, []);
 
-	function changeStatus(id: string, status: BookStatus) {
+	async function changeStatus(id: string, status: BookStatus) {
 		const newBooks =
 			books &&
 			books.map((book) => {
@@ -100,6 +72,11 @@ export default function Library() {
 				}
 				return book;
 			});
+		try {
+			await library.changeStatus(id, status);
+		} catch (err) {
+			console.log(err);
+		}
 		setBooks(newBooks);
 		toast(`The book has been added to '${status}'.`);
 	}
@@ -109,12 +86,16 @@ export default function Library() {
 		const text = event.currentTarget.innerText;
 		if (text !== section) {
 			setSection(text);
-			console.log(text);
 		}
 	}
 
-	function handleBookRemove(id: string) {
+	async function handleBookRemove(id: string) {
 		const newBooks = books && books.filter((book) => book.id !== id);
+		try {
+			await library.deleteBook(id);
+		} catch (err) {
+			console.log(err);
+		}
 		setBooks(newBooks);
 		toast("The book has been removed from library.");
 	}
