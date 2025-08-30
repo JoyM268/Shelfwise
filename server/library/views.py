@@ -113,6 +113,8 @@ class UserBooks(APIView):
                 return Response({"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
 class DeleteBook(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication] 
     def delete(self, request, book_id):
         try:
             instance = Library.objects.get(user=request.user, book_id=book_id)
