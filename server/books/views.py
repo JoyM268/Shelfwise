@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 import pycountry
 from django.conf import settings
+from library.models import Library
+from library.serializers import LibrarySerializer
 
 api_key = settings.GOOGLE_API_KEY
 
@@ -48,7 +50,7 @@ def filter_details(book):
     }
 
 class GetBookDetails(APIView):
-    def get(self, request, bookId):
+    def get(self, request, bookId):   
         url = f"https://www.googleapis.com/books/v1/volumes/{bookId}?key={api_key}"
         try:
             res = requests.get(url)
@@ -83,21 +85,30 @@ class GetBookDetails(APIView):
                     except:
                         language_name = code
 
+                status_value = None
+                try:
+                    instance = Library.objects.get(user=request.user, book_id=bookId)
+                    data = LibrarySerializer(instance=instance).data
+                    status_value = data["status_info"]
+                except:
+                    status_value = None
+
                 bookDetails = {
                     "id": data.get("id"),
                     "title": details.get("title"),
                     "authors": details.get("authors", []),
-	                "publisher": details.get("publisher"),
-	                "publishedDate": details.get("publishedDate"),
-	                "description": details.get("description"),
-	                "isbn": isbn,
-	                "pageCount": details.get("pageCount"),
-	                "dimensions": details.get("dimensions"),
-	                "categories": list(categories),
-                	"averageRating": details.get("averageRating"),
-	                "ratingsCount": details.get("ratingsCount"),
-	                "imageLinks": details.get("imageLinks"),
-	                "language": language_name
+                    "publisher": details.get("publisher"),
+                    "publishedDate": details.get("publishedDate"),
+                    "description": details.get("description"),
+                    "isbn": isbn,
+                    "pageCount": details.get("pageCount"),
+                    "dimensions": details.get("dimensions"),
+                    "categories": list(categories),
+                    "averageRating": details.get("averageRating"),
+                    "ratingsCount": details.get("ratingsCount"),
+                    "imageLinks": details.get("imageLinks"),
+                    "language": language_name,
+                    "status": status_value
                 }
 
                 return Response(bookDetails, status=status.HTTP_200_OK)

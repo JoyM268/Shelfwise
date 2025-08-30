@@ -91,6 +91,7 @@ class UserBooks(APIView):
                         book_id=book_id, 
                         title=data.get("title"), 
                         authors=data.get("authors", []),
+                        description=data.get("description", []),
                         publisher=data.get("publisher"),
                         published_date = data.get("publishedDate"),
                         isbn=data.get("isbn"),

@@ -12,6 +12,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/context/useAuth";
 import axios, { AxiosError } from "axios";
 import axiosInstance from "@/api/config";
+import library from "@/api/library";
+import type { BookStatus } from "./Library";
 
 interface Book {
 	id: string;
@@ -35,6 +37,7 @@ interface Book {
 		thumbnail: string;
 	};
 	language: string;
+	status: BookStatus | null;
 }
 
 export default function BookDetails() {
@@ -56,10 +59,11 @@ export default function BookDetails() {
 			setLoading(true);
 			setError(null);
 			try {
-				const res = await axiosInstance.get(url, {
+				const res = await axiosInstance.get<Book>(url, {
 					signal: controller.signal,
 				});
 				setBook(res.data);
+				setBookStatus(res.data.status || "");
 			} catch (err) {
 				if (axios.isCancel(err)) {
 					isCancelled = true;
@@ -84,9 +88,18 @@ export default function BookDetails() {
 		navigate(-1);
 	}
 
-	function removeBook() {
-		setBookStatus("");
-		toast("The book has been removed from library.");
+	async function removeBook() {
+		try {
+			if (bookId) {
+				await library.deleteBook(bookId);
+				setBookStatus("");
+				toast("The book has been removed from library.");
+			}
+		} catch (err) {
+			if (err instanceof AxiosError)
+				console.error("Failed to remove book:", err.message);
+			toast.error("Could not remove the book. Please try again.");
+		}
 	}
 
 	return (
