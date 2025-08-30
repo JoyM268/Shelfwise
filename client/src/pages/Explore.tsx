@@ -12,6 +12,8 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import Tilt from "react-parallax-tilt";
 import type { BookData } from "@/components/BookCarousel";
+import axiosInstance from "@/api/config";
+import axios, { AxiosError } from "axios";
 
 interface ExploreProps {
 	handleSearch(event: ChangeEvent<HTMLInputElement>): void;
@@ -63,38 +65,42 @@ export default function Explore({
 	}
 
 	useEffect(() => {
+		const controller = new AbortController();
+		let isCancelled = false;
+
 		async function getBooks() {
 			setSearchLoading(true);
 			setSearchError(null);
 
 			try {
-				const res = await fetch(
-					`http://127.0.0.1:8000/api/books?q=${query}`
-				);
-
-				if (!res.ok) {
-					throw new Error(res.statusText);
-				}
-
-				const data = await res.json();
-
-				setBooks(data);
+				const res = await axiosInstance.get(`/api/books?q=${query}`, {
+					signal: controller.signal,
+				});
+				setBooks(res.data);
 			} catch (err) {
-				if (err instanceof Error) {
-					setSearchError(err.message);
+				if (axios.isCancel(err)) {
+					isCancelled = true;
+				} else if (
+					err instanceof AxiosError &&
+					err.response?.data.error === "Book Not Found"
+				) {
+					setSearchError("No results found.");
+					console.log(err);
 				} else {
 					setSearchError(
 						"An error occured while loading the data, please try again later."
 					);
 				}
 			} finally {
-				setSearchLoading(false);
+				if (!isCancelled) setSearchLoading(false);
 			}
 		}
 
 		if (query && query.trim()) {
 			getBooks();
 		}
+
+		return () => controller.abort();
 	}, [query]);
 
 	return (
