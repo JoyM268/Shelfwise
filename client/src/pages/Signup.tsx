@@ -16,6 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import clsx from "clsx";
 import auth from "@/api/auth";
+import { AxiosError } from "axios";
+import { toast } from "sonner";
 
 export default function Signup() {
 	const [loading, setLoading] = useState(false);
@@ -60,17 +62,22 @@ export default function Signup() {
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		setLoading(true);
 		try {
-			const data = await auth.registerUser(
+			await auth.registerUser(
 				values.name,
 				values.username,
 				values.password
 			);
-
+			toast("Account created successfully. You may now log in.");
 			navigate("/login");
-		} catch {
+		} catch (err) {
+			let message = "An unexpected error occurred, try again later.";
+			if (err instanceof AxiosError && err.response?.data.username) {
+				message = "An account with this username already exists.";
+			}
+
 			form.setError("root", {
 				type: "manual",
-				message: "An unexpected error occurred, try again later.",
+				message: message,
 			});
 		} finally {
 			setLoading(false);
