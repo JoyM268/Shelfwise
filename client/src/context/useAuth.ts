@@ -7,6 +7,7 @@ export interface DecodedUser {
 	jti: string;
 	user_id: number;
 	username: string;
+	name: string;
 }
 
 export interface AuthTokens {
