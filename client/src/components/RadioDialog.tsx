@@ -11,6 +11,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import clsx from "clsx";
+import library from "@/api/library";
+import { useParams } from "react-router-dom";
+import type { BookStatus } from "@/pages/Library";
 
 interface RadioDialogProps {
 	children: ReactNode;
@@ -24,17 +27,30 @@ interface RadioDialogProps {
 export function RadioDialog({
 	value,
 	onValueChange,
-	options = ["Plan to Read", "Reading", "Currently Reading"],
+	options = ["Plan to Read", "Reading", "Finished"],
 	children,
 	title,
 	description,
 }: RadioDialogProps) {
 	const [open, setOpen] = useState(false);
+	const { bookId } = useParams();
 
-	function onSelectOption(newOption: string) {
-		if (value !== newOption) {
-			onValueChange(newOption);
-			toast(`The book has been added to '${newOption}'.`);
+	async function onSelectOption(newOption: string) {
+		try {
+			if (bookId) {
+				if (!value) {
+					await library.addBook(bookId, newOption as BookStatus);
+				} else {
+					await library.changeStatus(bookId, newOption as BookStatus);
+				}
+
+				if (value !== newOption) {
+					onValueChange(newOption);
+					toast(`The book has been added to '${newOption}'.`);
+				}
+			}
+		} catch (err) {
+			console.log(err);
 		}
 	}
 

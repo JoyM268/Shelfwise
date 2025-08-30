@@ -22,7 +22,7 @@ export default function ProfilePhoto({
 	}, [name]);
 
 	return (
-		<Avatar className="cursor-pointer w-9 h-9 border border-gray-400 shadow">
+		<Avatar className="cursor-pointer w-9 h-9 border border-gray-400 shadow text-sm">
 			<AvatarImage src={imgSrc} alt={imgAlt} />
 			<AvatarFallback>{fallback}</AvatarFallback>
 		</Avatar>

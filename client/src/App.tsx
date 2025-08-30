@@ -98,7 +98,7 @@ function App() {
 				<Toaster
 					position="top-center"
 					toastOptions={{
-						duration: 1500,
+						duration: 3000,
 					}}
 				/>
 				<div className="pt-20 h-screen relative">

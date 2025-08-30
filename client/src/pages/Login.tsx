@@ -17,6 +17,8 @@ import auth from "@/api/auth";
 import { useAuth } from "@/context/useAuth";
 import { useState } from "react";
 import clsx from "clsx";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 export default function Login() {
 	const { login } = useAuth();
@@ -46,11 +48,18 @@ export default function Login() {
 		try {
 			const data = await auth.loginUser(values.username, values.password);
 			login(data);
+			toast("Successfully logged in.");
 			navigate("/");
-		} catch {
+		} catch (err) {
+			let message = "An unexpected error occurred, try again later.";
+
+			if (err instanceof AxiosError && err.response?.data?.detail) {
+				message = "Invalid username or password.";
+			}
+
 			form.setError("root", {
 				type: "manual",
-				message: "An unexpected error occurred, try again later.",
+				message: message,
 			});
 		} finally {
 			setLoading(false);

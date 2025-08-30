@@ -2,6 +2,7 @@ import { AuthContext } from "@/context/useAuth";
 import { useState } from "react";
 import type { AuthTokens, DecodedUser } from "@/context/useAuth";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
 
 export default function AuthProvider({
 	children,
@@ -31,6 +32,7 @@ export default function AuthProvider({
 		setTokens(null);
 		setUser(null);
 		localStorage.removeItem("authTokens");
+		toast("Logout successful. See you next time!");
 	}
 
 	return (

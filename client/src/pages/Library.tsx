@@ -72,13 +72,16 @@ export default function Library() {
 				}
 				return book;
 			});
+
 		try {
 			await library.changeStatus(id, status);
+			setBooks(newBooks);
+			toast(`The book has been added to '${status}'.`);
 		} catch (err) {
-			console.log(err);
+			if (err instanceof AxiosError)
+				console.error("Failed to remove book:", err.message);
+			toast.error("Failed to update book status. Please try again.");
 		}
-		setBooks(newBooks);
-		toast(`The book has been added to '${status}'.`);
 	}
 
 	function handleSectionClick(event: MouseEvent<HTMLDivElement>) {
@@ -93,11 +96,13 @@ export default function Library() {
 		const newBooks = books && books.filter((book) => book.id !== id);
 		try {
 			await library.deleteBook(id);
+			setBooks(newBooks);
+			toast("The book has been removed from library.");
 		} catch (err) {
-			console.log(err);
+			if (err instanceof AxiosError)
+				console.error("Failed to remove book:", err.message);
+			toast.error("Could not remove the book. Please try again.");
 		}
-		setBooks(newBooks);
-		toast("The book has been removed from library.");
 	}
 
 	return (

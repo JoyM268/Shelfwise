@@ -91,7 +91,7 @@ export default function Header({ menu, setMenu }: HeaderProps) {
 
 				{user && (
 					<MenuDropdown>
-						<ProfilePhoto name={user.username} />
+						<ProfilePhoto name={user.name || user.username} />
 					</MenuDropdown>
 				)}
 			</nav>
@@ -109,7 +109,7 @@ export default function Header({ menu, setMenu }: HeaderProps) {
 					</div>
 				) : (
 					<div className="mr-2">
-						<ProfilePhoto name="Joy Mascarenhas" />
+						<ProfilePhoto name={user.name || user.username} />
 					</div>
 				)}
 			</div>
