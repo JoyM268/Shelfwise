@@ -82,14 +82,11 @@ export default function Explore({
 					isCancelled = true;
 				} else if (
 					err instanceof AxiosError &&
-					err.response?.data.error === "Book Not Found"
+					err.response?.data?.error === "Book Not Found"
 				) {
 					setSearchError("No results found.");
-					console.log(err);
 				} else {
-					setSearchError(
-						"An error occured while loading the data, please try again later."
-					);
+					setSearchError("An error occured, please try again later.");
 				}
 			} finally {
 				if (!isCancelled) setSearchLoading(false);
