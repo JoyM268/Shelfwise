@@ -105,17 +105,17 @@ DATABASES = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    config('ALLOWED_ORIGINS'),     
+    "https://shelfwise-library.vercel.app/",    
+    "https://shelfwise-be3f.onrender.com", 
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    config('ALLOWED_HOSTS')
+    "http://127.0.0.1:3000"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    config('ALLOWED_ORIGINS'),
+    "https://shelfwise-library.vercel.app/",
+    "https://shelfwise-be3f.onrender.com", 
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    config('ALLOWED_HOSTS')
+    "http://127.0.0.1:3000"
 ]
 
 # Password validation
