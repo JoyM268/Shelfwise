@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import BookRemoveWarning from "@/components/BookRemoveWarning";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/context/useAuth";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import axiosInstance from "@/api/config";
 import library from "@/api/library";
 import type { BookStatus } from "./Library";
@@ -67,8 +67,6 @@ export default function BookDetails() {
 			} catch (err) {
 				if (axios.isCancel(err)) {
 					isCancelled = true;
-				} else if (err instanceof AxiosError) {
-					setError(err.response?.data?.message || err.message);
 				} else {
 					setError(
 						"An error occured while loading the data, please try again later."

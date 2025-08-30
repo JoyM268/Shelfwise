@@ -4,7 +4,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import BookSkeleton from "./skeleton/BookSkeleton";
 import axiosInstance from "@/api/config";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 interface BookCarouselProps {
 	title: string;
@@ -52,8 +52,6 @@ export default function BookCarousel({
 			} catch (err) {
 				if (axios.isCancel(err)) {
 					isCancelled = true;
-				} else if (err instanceof AxiosError) {
-					setError(err.response?.data?.message || err.message);
 				} else {
 					setError(
 						"An error occured while loading the data, please try again later."
