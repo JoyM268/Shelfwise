@@ -108,28 +108,9 @@ DATABASES = {
 
 CORS_PREFLIGHT_MAX_AGE = 86400
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 CORS_ALLOWED_ORIGINS = [
     "https://shelfwise-library.vercel.app",
 ]
-
-CORS_ALLOW_ALL_HEADERS = True
-CORS_ALLOW_ALL_METHODS = True
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
-
 
 CSRF_TRUSTED_ORIGINS = [
     "https://shelfwise-library.vercel.app",

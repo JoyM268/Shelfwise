@@ -5,6 +5,7 @@ from rest_framework import status
 from .models import Library
 from .serializers import LibrarySerializer, UpdateStatusSerializer, BookIdSerializer
 from books.models import Book, Category
+from books.views import GetBookDetails
 from django.conf import settings
 from rest_framework import permissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -66,11 +67,11 @@ class UserBooks(APIView):
             try:
                 book = Book.objects.filter(book_id=book_id).first()
                 if not book:
-                    base_url = request.build_absolute_uri('/').rstrip('/')
-                    res = requests.get(f"{base_url}/api/books/{book_id}")
-                    if res.status_code != 200:
+                    book_details_view = GetBookDetails()
+                    response = book_details_view.get(request, book_id)
+                    if response.status_code != 200:
                         return Response({"error": "Book not Found"}, status=status.HTTP_404_NOT_FOUND)
-                    data = res.json()
+                    data = response.data
 
                     dimensions = data.get("dimensions")
                     height = None if not dimensions else dimensions.get("height")
