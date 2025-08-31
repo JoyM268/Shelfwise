@@ -8,16 +8,13 @@ import {
 	AlertDialogCancel,
 	AlertDialogAction,
 } from "./ui/alert-dialog";
+import type { LogoutWarningProps } from "@/types";
 
 export default function LogoutWarning({
 	open,
 	onOpenChange,
 	handleLogout,
-}: {
-	open: boolean;
-	onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
-	handleLogout: () => void;
-}) {
+}: LogoutWarningProps) {
 	return (
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
 			<AlertDialogContent>

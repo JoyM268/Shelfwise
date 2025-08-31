@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { motion } from "motion/react";
 import { useState } from "react";
 import LogoutWarning from "./LogoutWarning";
-import { useAuth } from "@/context/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Menu() {
 	const [popup, setPopup] = useState(false);

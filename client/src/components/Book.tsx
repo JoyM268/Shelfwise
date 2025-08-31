@@ -1,17 +1,7 @@
 import { NavLink } from "react-router-dom";
 import StatusDropdownMenu from "./StatusDropdownMenu";
-import type { BookStatus } from "@/pages/Library";
-
-interface BookProps {
-	id: string;
-	src: string;
-	title: string;
-	authors: string[];
-	progress?: number;
-	status?: BookStatus;
-	changeStatus?: (id: string, status: BookStatus) => void;
-	handleBookRemove?: (id: string) => void;
-}
+import type { BookProps } from "@/types";
+import { useMemo } from "react";
 
 export default function Book({
 	id,
@@ -22,9 +12,10 @@ export default function Book({
 	status,
 	handleBookRemove,
 }: BookProps) {
-	const authorsFirstNames = (authors || [])
-		.map((author) => author.split(" ")[0])
-		.join(", ");
+	const authorsFirstNames = useMemo(
+		() => (authors || []).map((author) => author.split(" ")[0]).join(", "),
+		[authors]
+	);
 
 	return (
 		<div className="flex flex-col w-36 sm:w-40 text-wrap px-2 pt-2 pb-4 relative">

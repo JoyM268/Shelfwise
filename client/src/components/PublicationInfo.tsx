@@ -1,17 +1,5 @@
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-
-interface PublicationInfoProps {
-	publisher: string;
-	publishedDate: string;
-	pageCount: number;
-	language: string;
-	dimensions: {
-		height: string;
-		width: string;
-		thickness: string;
-	};
-	isbn: string;
-}
+import type { PublicationInfoProps } from "@/types";
 
 export default function PublicationInfo({
 	publisher,

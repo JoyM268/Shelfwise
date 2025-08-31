@@ -6,12 +6,12 @@ import {
 } from "./ui/dropdown-menu";
 import LogoutWarning from "./LogoutWarning";
 import { useState, type ReactNode } from "react";
-import { useAuth } from "@/context/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function MenuDropdown({ children }: { children: ReactNode }) {
 	const { logout } = useAuth();
-
 	const [popup, setPopup] = useState(false);
+
 	return (
 		<>
 			<DropdownMenu>

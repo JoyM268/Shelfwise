@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import type { ButtonProps } from "@/types";
 
 export default function Button({
 	onClick,
@@ -6,14 +7,7 @@ export default function Button({
 	children = "Button",
 	type = "button",
 	disabled = false,
-}: {
-	onClick?: () => void;
-	classname?: string;
-	text?: string;
-	children?: string;
-	type?: "button" | "submit";
-	disabled?: boolean;
-}) {
+}: ButtonProps) {
 	return (
 		<input
 			type={type}

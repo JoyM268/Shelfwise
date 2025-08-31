@@ -1,11 +1,5 @@
 import { NavLink } from "react-router-dom";
-
-interface EmptyMessageProps {
-	title: string;
-	description: string;
-	buttonText?: string;
-	link?: string;
-}
+import type { EmptyMessageProps } from "@/types";
 
 export default function EmptyMessage({
 	title,

@@ -1,9 +1,5 @@
 import { TextTruncate } from "./ui/text-truncate";
-
-interface BookDescriptionProps {
-	description: string;
-	lines: number;
-}
+import type { BookDescriptionProps } from "@/types";
 
 export default function BookDescription({
 	description,

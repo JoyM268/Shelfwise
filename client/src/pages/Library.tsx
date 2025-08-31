@@ -1,98 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { MouseEvent } from "react";
 import { clsx } from "clsx";
 import Book from "@/components/Book";
 import EmptyMessage from "@/components/EmptyMessage";
-import { toast } from "sonner";
 import Loader from "@/components/ui/loader";
-import library from "@/api/library";
-import axios from "axios";
-
-export type BookStatus = "Reading" | "Plan to Read" | "Finished";
-
-export interface BookDataProps {
-	id: string;
-	src: string;
-	title: string;
-	authors: string[];
-	status: BookStatus;
-	progress: number;
-	total: number;
-}
+import { tabs } from "@/constants";
+import useLibrary from "@/hooks/useLibrary";
 
 export default function Library() {
 	const [section, setSection] = useState("All Books");
-	const [books, setBooks] = useState<null | BookDataProps[]>(null);
+	const { books, loading, error, handleBookRemove, changeStatus } =
+		useLibrary();
 	const count: [number, number, number] = [0, 0, 0];
-	const tabs = ["All Books", "Plan to Read", "Reading", "Finished"];
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState<null | string>(null);
-
-	useEffect(() => {
-		const controller = new AbortController();
-		let isCanceled = false;
-
-		async function getLibrary() {
-			setLoading(true);
-			setError(null);
-
-			try {
-				const res = await library.getBooks(controller.signal);
-				setBooks(res);
-			} catch (err) {
-				if (axios.isCancel(err)) {
-					isCanceled = true;
-				} else {
-					setError("An error occured, please try again later.");
-				}
-			} finally {
-				if (!isCanceled) setLoading(false);
-			}
-		}
-
-		getLibrary();
-
-		return () => controller.abort();
-	}, []);
-
-	async function changeStatus(id: string, status: BookStatus) {
-		const newBooks =
-			books &&
-			books.map((book) => {
-				if (book.id === id) {
-					return {
-						...book,
-						status,
-					};
-				}
-				return book;
-			});
-
-		try {
-			await library.changeStatus(id, status);
-			setBooks(newBooks);
-			toast(`The book has been added to '${status}'.`);
-		} catch {
-			toast.error("Failed to update book status. Please try again.");
-		}
-	}
 
 	function handleSectionClick(event: MouseEvent<HTMLDivElement>) {
 		event.preventDefault();
 		const text = event.currentTarget.innerText;
 		if (text !== section) {
 			setSection(text);
-		}
-	}
-
-	async function handleBookRemove(id: string) {
-		const newBooks = books && books.filter((book) => book.id !== id);
-		try {
-			await library.deleteBook(id);
-			setBooks(newBooks);
-			toast("The book has been removed from library.");
-		} catch {
-			toast.error("Could not remove the book. Please try again.");
 		}
 	}
 

@@ -1,6 +1,6 @@
-import { AuthContext } from "@/context/useAuth";
+import { AuthContext } from "@/hooks/useAuth";
 import { useState } from "react";
-import type { AuthTokens, DecodedUser } from "@/context/useAuth";
+import type { AuthTokens, DecodedUser } from "@/types";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 

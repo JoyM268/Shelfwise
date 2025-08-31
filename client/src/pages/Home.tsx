@@ -1,14 +1,9 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { type ChangeEvent, type FormEvent } from "react";
+import type { FormEvent } from "react";
 import Search from "@/components/Search";
 import BookCarousel from "@/components/BookCarousel";
-import { useAuth } from "@/context/useAuth";
-
-interface HomeProps {
-	handleSearch(event: ChangeEvent<HTMLInputElement>): void;
-	search: string;
-	showResults(): void;
-}
+import { useAuth } from "@/hooks/useAuth";
+import type { HomeProps } from "@/types";
 
 export default function Home({ handleSearch, search, showResults }: HomeProps) {
 	const navigate = useNavigate();

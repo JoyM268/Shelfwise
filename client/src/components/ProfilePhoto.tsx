@@ -1,11 +1,6 @@
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { useMemo } from "react";
-
-interface ProfilePhotoProps {
-	name: string;
-	imgSrc?: string;
-	imgAlt?: string;
-}
+import type { ProfilePhotoProps } from "@/types";
 
 export default function ProfilePhoto({
 	name,

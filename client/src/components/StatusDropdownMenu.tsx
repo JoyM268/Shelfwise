@@ -8,16 +8,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import type { BookStatus } from "@/pages/Library";
+import type { StatusDropdownMenuProps } from "@/types";
 import { useState } from "react";
 import BookRemoveWarning from "./BookRemoveWarning";
-
-interface StatusDropdownMenuProps {
-	id: string;
-	changeStatus(id: string, status: BookStatus): void;
-	handleBookRemove(id: string): void;
-	status: BookStatus;
-}
 
 export default function StatusDropdownMenu({
 	handleBookRemove,

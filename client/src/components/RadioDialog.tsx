@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -13,16 +13,7 @@ import { toast } from "sonner";
 import clsx from "clsx";
 import library from "@/api/library";
 import { useParams } from "react-router-dom";
-import type { BookStatus } from "@/pages/Library";
-
-interface RadioDialogProps {
-	children: ReactNode;
-	value: string;
-	onValueChange: (value: string) => void;
-	options?: string[];
-	title: string;
-	description: string;
-}
+import type { BookStatus, RadioDialogProps } from "@/types";
 
 export function RadioDialog({
 	value,

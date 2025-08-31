@@ -14,7 +14,7 @@ import { z } from "zod";
 import { NavLink, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import auth from "@/api/auth";
-import { useAuth } from "@/context/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import clsx from "clsx";
 import { toast } from "sonner";

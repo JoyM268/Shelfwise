@@ -1,71 +1,15 @@
-import { useEffect, useState } from "react";
 import Book from "./Book";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import BookSkeleton from "./skeleton/BookSkeleton";
-import axiosInstance from "@/api/config";
-import axios from "axios";
-
-interface BookCarouselProps {
-	title: string;
-	search_query: string;
-}
-
-export interface BookData {
-	id: string;
-	src: {
-		smallThumbnail: string;
-		thumbnail: string;
-	};
-	title: string;
-	authors: string[];
-}
+import type { BookCarouselProps } from "@/types";
+import useBookCarousel from "@/hooks/useBookCarousel";
 
 export default function BookCarousel({
 	title,
 	search_query,
 }: BookCarouselProps) {
-	const [books, setBooks] = useState<BookData[] | null>(null);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState<null | string>(null);
-
-	useEffect(() => {
-		let url: string;
-		if (search_query === "top") {
-			url = "/api/books/top/";
-		} else {
-			url = `/api/books/genre?q=${search_query}`;
-		}
-
-		const controller = new AbortController();
-		let isCancelled = false;
-
-		async function getBooks() {
-			setLoading(true);
-			setError(null);
-			try {
-				const res = await axiosInstance.get(url, {
-					signal: controller.signal,
-				});
-
-				setBooks(res.data);
-			} catch (err) {
-				if (axios.isCancel(err)) {
-					isCancelled = true;
-				} else {
-					setError(
-						"An error occured while loading the data, please try again later."
-					);
-				}
-			} finally {
-				if (!isCancelled) setLoading(false);
-			}
-		}
-
-		getBooks();
-
-		return () => controller.abort();
-	}, [search_query]);
+	const { books, loading, error } = useBookCarousel(search_query);
 
 	return (
 		<div className="flex flex-col gap-2">

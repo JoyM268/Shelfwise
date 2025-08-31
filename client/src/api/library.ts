@@ -1,12 +1,6 @@
-import type { BookStatus } from "@/pages/Library";
+import type { BookStatus, BookDataProps } from "@/types";
 import axiosInstance from "./config";
-import type { BookDataProps } from "@/pages/Library";
-
-const statusCodes = {
-	"Plan to Read": "PR",
-	Reading: "R",
-	Finished: "F",
-};
+import { statusCodes } from "@/constants";
 
 const library = {
 	changeStatus: async (id: string, status: BookStatus) => {

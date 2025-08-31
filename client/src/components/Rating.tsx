@@ -1,9 +1,5 @@
 import StarIcon from "@mui/icons-material/Star";
-
-interface RatingProps {
-	rating: number;
-	ratingsCount: number;
-}
+import type { RatingProps } from "@/types";
 
 export default function Rating({ rating, ratingsCount }: RatingProps) {
 	return (

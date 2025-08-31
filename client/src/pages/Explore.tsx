@@ -2,48 +2,12 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import BookCarousel from "@/components/BookCarousel";
 import SearchCarousel from "@/components/SearchCarousel";
 import Search from "@/components/Search";
-import {
-	useEffect,
-	useRef,
-	useState,
-	type ChangeEvent,
-	type FormEvent,
-} from "react";
+import { useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Tilt from "react-parallax-tilt";
-import type { BookData } from "@/components/BookCarousel";
-import axiosInstance from "@/api/config";
-import axios, { AxiosError } from "axios";
-
-interface ExploreProps {
-	handleSearch(event: ChangeEvent<HTMLInputElement>): void;
-	search: string;
-	results: boolean;
-	query: string | null;
-	handleSubmit: (event?: FormEvent<HTMLFormElement>) => void;
-}
-
-const genres = [
-	{ name: "Fiction", src: "fiction" },
-	{ name: "Fantasy", src: "fantasy" },
-	{ name: "Science Fiction", src: "science fiction" },
-	{ name: "Mystery", src: "mystery" },
-	{ name: "Thriller", src: "thriller" },
-	{ name: "Romance", src: "romance" },
-	{ name: "Horror", src: "horror" },
-	{ name: "Historical Fiction", src: "historical fiction" },
-	{ name: "Young Adult", src: "young adult" },
-	{ name: "Children's Fiction", src: "juvenile fiction" },
-	{ name: "Non-Fiction", src: "nonfiction" },
-	{ name: "Biography", src: "biography" },
-	{ name: "History", src: "history" },
-	{ name: "Science", src: "science" },
-	{ name: "Business", src: "business" },
-	{ name: "Self-Help", src: "self help" },
-	{ name: "Cooking", src: "cooking" },
-	{ name: "Travel", src: "travel" },
-	{ name: "Psychology", src: "psychology" },
-];
+import { genres } from "@/constants";
+import type { ExploreProps } from "@/types";
+import useSearchBooks from "@/hooks/useSearchBooks";
 
 export default function Explore({
 	search,
@@ -53,9 +17,7 @@ export default function Explore({
 	handleSubmit,
 }: ExploreProps) {
 	const refs = useRef<Record<string, HTMLDivElement | null>>({});
-	const [books, setBooks] = useState<BookData[] | null>(null);
-	const [searchLoading, setSearchLoading] = useState(false);
-	const [searchError, setSearchError] = useState<null | string>(null);
+	const { books, loading, error } = useSearchBooks(query);
 
 	function handleGenreClick(src: string) {
 		const targetRef = refs.current[src];
@@ -63,42 +25,6 @@ export default function Explore({
 			targetRef.scrollIntoView({ behavior: "smooth" });
 		}
 	}
-
-	useEffect(() => {
-		const controller = new AbortController();
-		let isCancelled = false;
-
-		async function getBooks() {
-			setSearchLoading(true);
-			setSearchError(null);
-
-			try {
-				const res = await axiosInstance.get(`/api/books?q=${query}`, {
-					signal: controller.signal,
-				});
-				setBooks(res.data);
-			} catch (err) {
-				if (axios.isCancel(err)) {
-					isCancelled = true;
-				} else if (
-					err instanceof AxiosError &&
-					err.response?.data?.error === "Book Not Found"
-				) {
-					setSearchError("No results found.");
-				} else {
-					setSearchError("An error occured, please try again later.");
-				}
-			} finally {
-				if (!isCancelled) setSearchLoading(false);
-			}
-		}
-
-		if (query && query.trim()) {
-			getBooks();
-		}
-
-		return () => controller.abort();
-	}, [query]);
 
 	return (
 		<div className="px-6 pb-6 pt-5 w-full max-w-[1300px] mx-auto">
@@ -116,8 +42,8 @@ export default function Explore({
 					>
 						<SearchCarousel
 							books={books}
-							loading={searchLoading}
-							error={searchError}
+							loading={loading}
+							error={error}
 						/>
 					</motion.div>
 				)}

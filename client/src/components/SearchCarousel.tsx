@@ -2,17 +2,13 @@ import Book from "./Book";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import BookSkeleton from "./skeleton/BookSkeleton";
-import type { BookData } from "./BookCarousel";
+import type { SearchCarouselProps } from "@/types";
 
 export default function SearchCarousel({
 	books,
 	loading,
 	error,
-}: {
-	books: BookData[] | null;
-	loading: boolean;
-	error: null | string;
-}) {
+}: SearchCarouselProps) {
 	return (
 		<div className="flex flex-col gap-2">
 			<span className="font-semibold text-xl pl-3">Search Results</span>

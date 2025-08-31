@@ -4,12 +4,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import clsx from "clsx";
 import MenuDropdown from "./MenuDropdown";
 import ProfilePhoto from "./ProfilePhoto";
-import { useAuth } from "@/context/useAuth";
-
-interface HeaderProps {
-	menu: boolean;
-	setMenu: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { useAuth } from "@/hooks/useAuth";
+import type { HeaderProps } from "@/types";
 
 export default function Header({ menu, setMenu }: HeaderProps) {
 	const { user } = useAuth();

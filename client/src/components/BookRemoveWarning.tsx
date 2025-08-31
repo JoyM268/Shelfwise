@@ -9,13 +9,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "./ui/alert-dialog";
-
-interface BookRemoveWarningProps {
-	id: string;
-	handleBookRemove(id: string): void;
-	alert: boolean;
-	setAlert: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import type { BookRemoveWarningProps } from "@/types";
 
 export default function BookRemoveWarning({
 	handleBookRemove,

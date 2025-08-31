@@ -5,82 +5,21 @@ import PublicationInfo from "@/components/PublicationInfo";
 import BookDescription from "@/components/BookDescription";
 import BookCategory from "@/components/BookCategory";
 import { RadioDialog } from "@/components/RadioDialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import BookRemoveWarning from "@/components/BookRemoveWarning";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/context/useAuth";
-import axios from "axios";
-import axiosInstance from "@/api/config";
+import BookDetailsSkeleton from "@/components/skeleton/BookDetailsSkeleton";
+import { useAuth } from "@/hooks/useAuth";
 import library from "@/api/library";
-import type { BookStatus } from "./Library";
-
-interface Book {
-	id: string;
-	title: string;
-	authors: string[];
-	publisher: string;
-	publishedDate: string;
-	description: string;
-	isbn: string;
-	pageCount: number;
-	dimensions: {
-		height: string;
-		width: string;
-		thickness: string;
-	};
-	categories: string[];
-	averageRating: number;
-	ratingsCount: number;
-	imageLinks: {
-		smallThumbnail: string;
-		thumbnail: string;
-	};
-	language: string;
-	status: BookStatus | null;
-}
+import useBook from "@/hooks/useBook";
 
 export default function BookDetails() {
 	const { bookId } = useParams();
+	const { loading, error, book } = useBook(bookId);
 	const navigate = useNavigate();
-	const [bookStatus, setBookStatus] = useState("");
 	const [alert, setAlert] = useState(false);
-	const [book, setBook] = useState<Book | null>(null);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
 	const { user } = useAuth();
-
-	useEffect(() => {
-		const url = `/api/books/${bookId}`;
-		const controller = new AbortController();
-		let isCancelled = false;
-
-		async function getBook() {
-			setLoading(true);
-			setError(null);
-			try {
-				const res = await axiosInstance.get<Book>(url, {
-					signal: controller.signal,
-				});
-				setBook(res.data);
-				setBookStatus(res.data.status || "");
-			} catch (err) {
-				if (axios.isCancel(err)) {
-					isCancelled = true;
-				} else {
-					setError(
-						"An error occured while loading the data, please try again later."
-					);
-				}
-			} finally {
-				if (!isCancelled) setLoading(false);
-			}
-		}
-
-		getBook();
-
-		return () => controller.abort();
-	}, [bookId]);
+	const [bookStatus, setBookStatus] = useState<string>(book?.status || "");
 
 	function back() {
 		navigate(-1);
@@ -100,32 +39,7 @@ export default function BookDetails() {
 
 	return (
 		<>
-			{loading && (
-				<div className="grid md:grid-cols-[minmax(200px,_auto)_1fr] px-6 mt-16 gap-12 grid-cols-1 pb-16">
-					<div className="mx-auto w-full">
-						<Skeleton className="h-90 w-60 rounded-lg mx-auto" />
-						<Skeleton className="w-full mt-4 h-10" />
-						<Skeleton className="w-full mt-3 h-10" />
-					</div>
-					<div className="sm:pr-20">
-						<Skeleton className="w-full h-12" />
-						<Skeleton className="w-full h-6 mt-4" />
-						<Skeleton className="mt-4 h-4 w-2/6" />
-						<div className="flex flex-wrap items-center mt-5 gap-2.5">
-							{[1, 2, 3, 4].map((ele) => {
-								return (
-									<Skeleton
-										key={ele}
-										className="rounded-lg w-20 h-6"
-									/>
-								);
-							})}
-						</div>
-						<Skeleton className="w-full h-28 mt-7" />
-						<Skeleton className="h-72 mt-7" />
-					</div>
-				</div>
-			)}
+			{loading && <BookDetailsSkeleton />}
 			{error && (
 				<div className="text-red-500 mx-auto text-center flex items-center justify-center h-full sm:-m-20 -m-30 px-10">
 					{error}

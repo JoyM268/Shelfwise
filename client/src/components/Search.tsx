@@ -1,11 +1,6 @@
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import type { ChangeEvent } from "react";
-
-interface SearchProps {
-	search: string;
-	handleSearch(event?: ChangeEvent<HTMLInputElement>): void;
-}
+import type { SearchProps } from "@/types";
 
 export default function Search({ search, handleSearch }: SearchProps) {
 	return (
