@@ -12,6 +12,7 @@ class Library(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="library")
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     status = models.CharField(max_length=2, choices=READING_STATUS_CHOICES, default="PR")
+    progress = models.PositiveIntegerField(default=0)
     added_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:

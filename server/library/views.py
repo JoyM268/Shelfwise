@@ -88,7 +88,10 @@ class UserBooks(APIView):
                     )
                     book.categories.set(categories)
 
-                instance = Library.objects.create(book=book, user=request.user, status=status_info)
+                progress = 0
+                if(status == "F"):
+                    progress = book.page_count
+                instance = Library.objects.create(book=book, user=request.user, status=status_info, progress=progress)
                 return Response({"message": "Book added successfully."}, status=status.HTTP_200_OK)
             except Exception as e:
                 print(e)
