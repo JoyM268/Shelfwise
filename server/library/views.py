@@ -21,7 +21,6 @@ def filter_book_details(book):
     return {
         "id": book_details.get("book_id"),
         "title": book_details.get("title"),
-        "description": book_details.get("description"),
         "authors": book_details.get("authors", []),
         "total": book_details.get("page_count"),
         "status": book.get("status_info"),
@@ -72,16 +71,8 @@ class UserBooks(APIView):
                     if response.status_code != 200:
                         return Response({"error": "Book not Found"}, status=status.HTTP_404_NOT_FOUND)
                     data = response.data
-
-                    dimensions = data.get("dimensions")
-                    height = None if not dimensions else dimensions.get("height")
-                    width = None if not dimensions else dimensions.get("width")
-                    thickness = None if not dimensions else dimensions.get("thickness")
-
                     image_links = data.get("imageLinks")
-                    small_thumbnail = None if not image_links else image_links.get("smallThumbnail")
-                    thumbnail = None if not image_links else image_links.get("thumbnail")
-
+                    thumbnail = image_links.get("smallThumbnail") or None if not image_links else image_links.get("thumbnail")
                     category_names = data.get("categories", [])
                     categories = []
                     for name in category_names:
@@ -92,19 +83,8 @@ class UserBooks(APIView):
                         book_id=book_id, 
                         title=data.get("title"), 
                         authors=data.get("authors", []),
-                        description=data.get("description", []),
-                        publisher=data.get("publisher"),
-                        published_date = data.get("publishedDate"),
-                        isbn=data.get("isbn"),
                         page_count=data.get("pageCount"),
-                        height=height,
-                        width=width,
-                        thickness=thickness,
-                        average_rating=data.get("averageRating"),
-                        rating_count=data.get("ratingsCount"),
-                        small_thumbnail=small_thumbnail,
                         thumbnail=thumbnail,
-                        language=data.get("language")
                     )
                     book.categories.set(categories)
 

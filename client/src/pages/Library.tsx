@@ -18,7 +18,6 @@ export interface BookDataProps {
 	status: BookStatus;
 	progress: number;
 	total: number;
-	description: string;
 }
 
 export default function Library() {
