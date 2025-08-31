@@ -33,7 +33,7 @@ class UserBooks(APIView):
 
     def get(self, request):
         try:
-            instance = Library.objects.filter(user=request.user)
+            instance = Library.objects.filter(user=request.user).select_related('book')
             data = LibrarySerializer(instance, many=True).data
             filtered_data = map(filter_book_details, data)
             return Response(filtered_data, status=status.HTTP_200_OK)
@@ -49,7 +49,7 @@ class UserBooks(APIView):
             book_id = serializer.validated_data["id"]
             new_status = serializer.validated_data["status"]
             try:
-                instance = Library.objects.get(user=request.user, book_id=book_id)
+                instance = Library.objects.select_related("book").get(user=request.user, book_id=book_id)
                 instance.status = new_status
                 if new_status == "F":
                     instance.progress = instance.book.page_count
