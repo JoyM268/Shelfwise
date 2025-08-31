@@ -30,11 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    'shelfwise-be3f.onrender.com',
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
 
 
 # Application definition
@@ -108,14 +104,9 @@ DATABASES = {
 
 CORS_PREFLIGHT_MAX_AGE = 86400
 
-CORS_ALLOWED_ORIGINS = [
-    "https://shelfwise-library.vercel.app",
-]
+CORS_ALLOWED_ORIGINS = config('ALLOWED_ORIGINS').split(',')
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://shelfwise-library.vercel.app",
-    "https://shelfwise-be3f.onrender.com",
-]
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS').split(',')
 
 AUTH_PASSWORD_VALIDATORS = [
     {
