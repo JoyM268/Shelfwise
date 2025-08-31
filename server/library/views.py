@@ -17,7 +17,6 @@ def create_categories_list(category):
 
 def filter_book_details(book):
     book_details = book.get("book", {})
-    categories = map(create_categories_list, book_details.get("categories", []))
     return {
         "id": book_details.get("book_id"),
         "title": book_details.get("title"),
