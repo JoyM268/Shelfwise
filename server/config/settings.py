@@ -97,6 +97,16 @@ DATABASES = {
     )
 }
 
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+'''
+
+
 CORS_PREFLIGHT_MAX_AGE = 86400
 
 CORS_ALLOWED_ORIGINS = config('ALLOWED_ORIGINS').split(',')
