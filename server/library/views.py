@@ -51,6 +51,8 @@ class UserBooks(APIView):
             try:
                 instance = Library.objects.get(user=request.user, book_id=book_id)
                 instance.status = new_status
+                if new_status == "F":
+                    instance.progress = instance.book.page_count
                 instance.save()
                 return Response({"message": "Status updated successfully."}, status=status.HTTP_200_OK)
             except Library.DoesNotExist:
