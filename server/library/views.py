@@ -53,6 +53,8 @@ class UserBooks(APIView):
                 instance.status = new_status
                 if new_status == "F":
                     instance.progress = instance.book.page_count
+                if new_status == "P":
+                    instance.progress = 0
                 instance.save()
                 return Response({"message": "Status updated successfully."}, status=status.HTTP_200_OK)
             except Library.DoesNotExist:
