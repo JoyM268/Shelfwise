@@ -21,34 +21,6 @@ def filter_book_details(book):
 def create_categories_list(category):
     return category.get("name")
 
-def filter_details(book):
-    book_details = book.get("book", {})
-    categories = map(create_categories_list, book_details.get("categories", []))
-    return {
-        "id": book_details.get("book_id"),
-        "title": book_details.get("title"),
-        "description": book_details.get("description"),
-        "authors": book_details.get("authors", []),
-        "publisher": book_details.get("publisher"),
-        "publishedDate": book_details.get("published_date"),
-        "isbn": book_details.get("isbn"),
-        "categories": categories,
-        "pageCount": book_details.get("page_count"),
-        "averageRating": book_details.get("average_rating"),
-        "ratingsCount": book_details.get("rating_count"),
-        "language": book_details.get("language"),
-        "dimensions": {
-            "height": book_details.get("height"),
-            "width": book_details.get("width"),
-            "thickness": book_details.get("thickness"),
-        },
-        "status": book.get("status_info"),
-        "imageLinks": {
-            "smallThumbnail": book_details.get("small_thumbnail"),
-            "thumbnail": book_details.get("thumbnail")
-        }
-    }
-
 class GetBookDetails(APIView):
     def get(self, request, bookId):   
         url = f"https://www.googleapis.com/books/v1/volumes/{bookId}?key={api_key}"
@@ -90,8 +62,10 @@ class GetBookDetails(APIView):
                     instance = Library.objects.get(user=request.user, book_id=bookId)
                     data = LibrarySerializer(instance=instance).data
                     status_value = data["status_info"]
+                    progress = data["progress"]
                 except:
                     status_value = None
+                    progress = None
 
                 bookDetails = {
                     "id": data.get("id"),
@@ -108,7 +82,8 @@ class GetBookDetails(APIView):
                     "ratingsCount": details.get("ratingsCount"),
                     "imageLinks": details.get("imageLinks"),
                     "language": language_name,
-                    "status": status_value
+                    "status": status_value,
+                    "progress": progress
                 }
 
                 return Response(bookDetails, status=status.HTTP_200_OK)

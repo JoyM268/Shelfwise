@@ -20,7 +20,7 @@ export default function useBook(bookId: BookId) {
 				const res = await axiosInstance.get<Book>(url, {
 					signal: controller.signal,
 				});
-				setBook(res.data);
+				setBook(() => res.data);
 			} catch (err) {
 				if (axios.isCancel(err)) {
 					isCancelled = true;
@@ -39,5 +39,9 @@ export default function useBook(bookId: BookId) {
 		return () => controller.abort();
 	}, [bookId]);
 
-	return { loading, error, book };
+	return {
+		loading,
+		error,
+		book,
+	};
 }

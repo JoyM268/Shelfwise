@@ -3,11 +3,12 @@ import axiosInstance from "./config";
 import { statusCodes } from "@/constants";
 
 const library = {
-	changeStatus: async (id: string, status: BookStatus) => {
+	changeStatus: async (id: string, status: BookStatus, progress?: number) => {
 		const statusCode = statusCodes[status];
 		const response = await axiosInstance.put("/api/library/", {
 			id,
 			status: statusCode,
+			progress,
 		});
 
 		return response.data;

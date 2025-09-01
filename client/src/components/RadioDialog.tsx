@@ -37,11 +37,11 @@ export function RadioDialog({
 
 				if (value !== newOption) {
 					onValueChange(newOption);
-					toast(`The book has been added to '${newOption}'.`);
+					toast.success(`The book has been added to '${newOption}'.`);
 				}
 			}
 		} catch {
-			toast(`An error occured, please try again later.`);
+			toast.error(`An error occured, please try again later.`);
 		}
 	}
 

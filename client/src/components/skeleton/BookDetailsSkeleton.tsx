@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function BookDetailsSkeleton() {
 	return (
-		<div className="grid md:grid-cols-[minmax(200px,_auto)_1fr] px-6 mt-16 gap-12 grid-cols-1 pb-16">
+		<div className="grid md:grid-cols-[minmax(200px,_auto)_1fr] px-6 mt-9 gap-12 grid-cols-1 pb-16">
 			<div className="mx-auto w-full">
 				<Skeleton className="h-90 w-60 rounded-lg mx-auto" />
 				<Skeleton className="w-full mt-4 h-10" />

@@ -47,13 +47,18 @@ class UserBooks(APIView):
         if serializer.is_valid(raise_exception=True):
             book_id = serializer.validated_data["id"]
             new_status = serializer.validated_data["status"]
+            progress = serializer.validated_data["progress"]
             try:
                 instance = Library.objects.select_related("book").get(user=request.user, book_id=book_id)
                 instance.status = new_status
                 if new_status == "F":
                     instance.progress = instance.book.page_count
-                if new_status == "P":
+                elif new_status == "P":
                     instance.progress = 0
+                elif progress >= 0 and progress <= instance.book.page_count:
+                    instance.progress = progress
+                else:
+                    return Response({"error": "Invalid progress value."}, status=status.HTTP_400_BAD_REQUEST)
                 instance.save()
                 return Response({"message": "Status updated successfully."}, status=status.HTTP_200_OK)
             except Library.DoesNotExist:

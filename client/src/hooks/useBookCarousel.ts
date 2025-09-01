@@ -23,7 +23,7 @@ export default function useBookCarousel(search_query: string) {
 			setLoading(true);
 			setError(null);
 			try {
-				const res = await axiosInstance.get(url, {
+				const res = await axiosInstance.get<BookData[]>(url, {
 					signal: controller.signal,
 				});
 

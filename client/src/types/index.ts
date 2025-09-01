@@ -37,6 +37,7 @@ export interface Book {
 	};
 	language: string;
 	status: BookStatus | null;
+	progress: number | null;
 }
 
 export interface ExploreProps {
