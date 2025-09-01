@@ -14,7 +14,7 @@ export default function Book({
 	handleBookRemove,
 	total,
 	progress,
-	reading,
+	reading = false,
 }: BookProps) {
 	const authorsFirstNames = useMemo(
 		() => (authors || []).map((author) => author.split(" ")[0]).join(", "),
@@ -50,7 +50,7 @@ export default function Book({
 						: authorsFirstNames.slice(0, 20) + "..."}
 				</span>
 			</span>
-			{reading && (
+			{reading && progress && total && (
 				<div className="mt-0.5 select-none">
 					<div className="text-[0.6em] text-gray-500 flex justify-between items-center">
 						<div>{`${progress}/${total} pages`}</div>

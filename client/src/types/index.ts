@@ -163,12 +163,12 @@ export interface BookProps {
 	src: string;
 	title: string;
 	authors: string[];
-	progress: number;
+	progress?: number;
 	status?: BookStatus;
 	changeStatus?: (id: string, status: BookStatus) => void;
 	handleBookRemove?: (id: string) => void;
-	total: number;
-	reading: boolean;
+	total?: number;
+	reading?: boolean;
 }
 
 export interface DecodedUser {
