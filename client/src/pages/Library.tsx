@@ -80,6 +80,9 @@ export default function Library() {
 											changeStatus={changeStatus}
 											status={book.status}
 											handleBookRemove={handleBookRemove}
+											total={book.total}
+											progress={book.progress}
+											reading={section === "Reading"}
 										/>
 									);
 								}

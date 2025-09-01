@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import StatusDropdownMenu from "./StatusDropdownMenu";
 import type { BookProps } from "@/types";
 import { useMemo } from "react";
+import { Progress } from "./ui/progress";
 
 export default function Book({
 	id,
@@ -11,6 +12,9 @@ export default function Book({
 	changeStatus,
 	status,
 	handleBookRemove,
+	total,
+	progress,
+	reading,
 }: BookProps) {
 	const authorsFirstNames = useMemo(
 		() => (authors || []).map((author) => author.split(" ")[0]).join(", "),
@@ -33,19 +37,31 @@ export default function Book({
 					className="w-36 h-52 sm:w-40 rounded-xs hover:scale-[1.02] cursor-pointer transition-all duration-300"
 				/>
 			</NavLink>
-			<span className="text-[12px] sm:text-[13px] font-semibold mt-3 cursor-pointer hover:text-gray-700 transition-all duration-300">
+			<span className="text-[0.8em] sm:text-[0.85em] font-semibold mt-1.5 cursor-pointer hover:text-gray-700 transition-all duration-300">
 				<NavLink to={`/book/${id}`}>
 					{title.length < 21 ? title : title.slice(0, 19) + "..."}
 				</NavLink>
 			</span>
 
-			<span className="text-[11px] sm:text-[12px]">
+			<span className="text-[0.7em] sm:text-[0.72em]">
 				<span>
 					{authorsFirstNames && authorsFirstNames.length < 23
 						? authorsFirstNames
 						: authorsFirstNames.slice(0, 20) + "..."}
 				</span>
 			</span>
+			{reading && (
+				<div className="mt-0.5 select-none">
+					<div className="text-[0.6em] text-gray-500 flex justify-between items-center">
+						<div>{`${progress}/${total} pages`}</div>
+						<div>{`${Math.round((progress / total) * 100)}%`}</div>
+					</div>
+					<Progress
+						className="h-1 mt-1"
+						value={Math.round((progress / total) * 100)}
+					/>
+				</div>
+			)}
 		</div>
 	);
 }

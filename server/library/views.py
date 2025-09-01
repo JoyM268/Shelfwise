@@ -23,7 +23,8 @@ def filter_book_details(book):
         "authors": book_details.get("authors", []),
         "total": book_details.get("page_count"),
         "status": book.get("status_info"),
-        "src": book_details.get("thumbnail")
+        "src": book_details.get("thumbnail"),
+        "progress": book.get("progress")
     }
 
 class UserBooks(APIView):
