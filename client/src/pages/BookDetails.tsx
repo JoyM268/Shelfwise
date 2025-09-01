@@ -267,13 +267,12 @@ export default function BookDetails() {
 													<CheckCircleOutlineIcon />
 												</div>
 												<span className="font-semibold">
-													You finished this book.
-													Great job!
+													Finished
 												</span>
 											</div>
 											<p className="text-gray-700 text-xs mt-3.5 text-wrap">
-												You haven't started this book
-												yet. Ready to dive in?
+												You finished this book. Great
+												job!
 											</p>
 											<button
 												className="flex items-center justify-center w-full text-xs gap-2 mt-5 bg-green-600 hover:bg-green-600/95 text-white py-1.5 rounded-lg cursor-pointer mb-2"
