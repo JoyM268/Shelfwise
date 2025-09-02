@@ -26,7 +26,7 @@ class GetBookDetails(APIView):
     def get(self, request, bookId):
         cache_key = f"id:{bookId}"
         cached_results = cache.get(cache_key)
-        if cache_key:
+        if cached_results:
             return Response(cached_results, status=status.HTTP_200_OK)
         url = f"https://www.googleapis.com/books/v1/volumes/{bookId}?key={api_key}"
         try:
