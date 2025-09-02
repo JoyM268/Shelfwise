@@ -39,22 +39,18 @@ _Note: The backend is hosted on a free Render instance, so the initial server re
 
 ## Tech Stack
 
-### Frontend
+The project is built with React and Django and other modern technologies:
 
--   React
--   TypeScript
--   Tailwind CSS
--   Shadcn
--   Framer Motion
--   Zod
-
-### Backend
-
--   Django
--   Django Rest Framework
--   PostgreSQL
--   Redis
--   Google Books API
+- **Frontend:** React, TypeScript, Tailwind CSS
+- **Backend:** Django, Django REST Framework
+- **Database:** PostgreSQL, Redis
+- **Authentication:** JWT
+- **APIs:** Google Books API
+- **Key Libraries:**
+  - `axios`: For making API requests
+  - `framer-motion`: For UI animations
+  - `shadcn/ui`: For UI components
+  - `zod`: For schema validation
 
 ## Screenshots
 
