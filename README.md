@@ -10,6 +10,7 @@ A platform to catalog your personal book collection, track reading progress, and
 -   [Tech Stack](#tech-stack)
 -   [Screenshots](#screenshots)
 -   [Getting Started](#getting-started)
+-   [Attribution](#attribution)
 -   [Contact](#contact)
 
 ## Description
@@ -204,6 +205,13 @@ npm run dev
 
 The frontend will be available at `http://localhost:5173`
 
+## Attribution
+
+This project uses the Google Books API to provide comprehensive book information and search functionality. 
+
+- **Google Books API**: [https://developers.google.com/books](https://developers.google.com/books)
+
 ## Contact
 
 For any questions or suggestions, please reach out to [joy.mascarenhas@outlook.com](mailto:joy.mascarenhas@outlook.com).
+
