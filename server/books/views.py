@@ -23,7 +23,11 @@ def create_categories_list(category):
     return category.get("name")
 
 class GetBookDetails(APIView):
-    def get(self, request, bookId):   
+    def get(self, request, bookId):
+        cache_key = f"id:{bookId}"
+        cached_results = cache.get(cache_key)
+        if cache_key:
+            return Response(cached_results, status=status.HTTP_200_OK)
         url = f"https://www.googleapis.com/books/v1/volumes/{bookId}?key={api_key}"
         try:
             res = requests.get(url)
@@ -86,6 +90,8 @@ class GetBookDetails(APIView):
                     "status": status_value,
                     "progress": progress
                 }
+
+                cache.set(cache_key, bookDetails, timeout=60*60*24)
 
                 return Response(bookDetails, status=status.HTTP_200_OK)
             elif res.status_code == 404 or res.status_code == 503:
@@ -152,6 +158,7 @@ class GetTopBooks(APIView):
                 data = res.json()
                 bookList = data.get("items", [])
                 newBookList = map(filter_book_details, bookList)
+                cache.set(cache_key, newBookList, timeout=604800)
                 return Response(newBookList, status=status.HTTP_200_OK)
             else:
                 return Response(
@@ -168,6 +175,10 @@ class GetBooksByQuery(APIView):
         search_query = self.request.query_params.get('q', None)
         if search_query:
             title = search_query if " " not in search_query else f"\"{search_query}\""
+            cache_key = f"query:{title}"
+            cached_data = cache.get(cache_key)
+            if cached_data:
+                return Response(cached_data, status=status.HTTP_200_OK)
             url = f"https://www.googleapis.com/books/v1/volumes?q={title}&maxResults=40&key={api_key}"
             
             try:
@@ -180,6 +191,7 @@ class GetBooksByQuery(APIView):
                                  
                     bookList = data.get("items", [])
                     newBookList = map(filter_book_details, bookList)
+                    cache.set(cache_key, newBookList, timeout=60*60*24)
                     return Response(newBookList, status=status.HTTP_200_OK)
                 elif res.status_code == 400:
                     return Response({"error": "Book Not Found"}, status=status.HTTP_404_NOT_FOUND)
