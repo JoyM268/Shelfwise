@@ -24,10 +24,6 @@ def create_categories_list(category):
 
 class GetBookDetails(APIView):
     def get(self, request, bookId):
-        cache_key = f"id:{bookId}"
-        cached_results = cache.get(cache_key)
-        if cached_results:
-            return Response(cached_results, status=status.HTTP_200_OK)
         url = f"https://www.googleapis.com/books/v1/volumes/{bookId}?key={api_key}"
         try:
             res = requests.get(url)
@@ -90,8 +86,6 @@ class GetBookDetails(APIView):
                     "status": status_value,
                     "progress": progress
                 }
-
-                cache.set(cache_key, bookDetails, timeout=60*60*24)
 
                 return Response(bookDetails, status=status.HTTP_200_OK)
             elif res.status_code == 404 or res.status_code == 503:
