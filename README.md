@@ -31,8 +31,6 @@ _Note: The backend is hosted on a free Render instance, so the initial server re
 
 ## Features
 
-### Core Functionality
-
 -   **User Authentication**: Secure registration, login, and JWT-based authentication
 -   **Book Discovery**: Search and explore books using Google Books API
 -   **Personal Library**: Add books to your personal collection
