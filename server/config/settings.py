@@ -103,6 +103,16 @@ DATABASES = {
 }
 '''
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": config('REDIS_URL'),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
 
 CORS_PREFLIGHT_MAX_AGE = 86400
 

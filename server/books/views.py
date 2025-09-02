@@ -6,6 +6,7 @@ import pycountry
 from django.conf import settings
 from library.models import Library
 from library.serializers import LibrarySerializer
+from django.core.cache import cache
 
 api_key = settings.GOOGLE_API_KEY
 
@@ -105,6 +106,10 @@ class GetBooksByGenre(APIView):
         search_query = self.request.query_params.get('q', None)
         if search_query:
             genre = search_query if " " not in search_query else f"\"{search_query}\""
+            cache_key = f"genre:{genre}"
+            cached_results = cache.get(cache_key)
+            if cached_results:
+                return Response(cached_results, status=status.HTTP_200_OK)
             url = f"https://www.googleapis.com/books/v1/volumes?q=subject:{genre}&maxResults=40&key={api_key}"
             try:
                 res = requests.get(url)
@@ -116,6 +121,7 @@ class GetBooksByGenre(APIView):
                     
                     bookList = data.get("items", [])
                     newBookList = map(filter_book_details, bookList)
+                    cache.set(cache_key, newBookList, timeout=604800)
                     return Response(newBookList, status=status.HTTP_200_OK)
                 elif res.status_code == 400:
                     return Response({"error": "Invalid Genre."}, status=status.HTTP_404_NOT_FOUND)
