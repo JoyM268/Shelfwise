@@ -55,7 +55,7 @@ export default function AuthProvider({
 		setTokens(null);
 		setUser(null);
 		localStorage.removeItem("authTokens");
-		toast("Logout successful. See you next time!");
+		toast.success("Logout successful. See you next time!");
 	}
 
 	return (

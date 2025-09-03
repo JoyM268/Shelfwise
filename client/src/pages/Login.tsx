@@ -48,7 +48,7 @@ export default function Login() {
 		try {
 			const data = await auth.loginUser(values.username, values.password);
 			login(data);
-			toast("Successfully logged in.");
+			toast.success("Successfully logged in.");
 			navigate("/");
 		} catch (err) {
 			let message = "An unexpected error occurred, try again later.";

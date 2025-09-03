@@ -41,7 +41,7 @@ export default function useLibrary() {
 		try {
 			await library.deleteBook(id);
 			setBooks(newBooks);
-			toast("The book has been removed from library.");
+			toast.success("The book has been removed from library.");
 		} catch {
 			toast.error("Could not remove the book. Please try again.");
 		}
@@ -63,7 +63,7 @@ export default function useLibrary() {
 		try {
 			await library.changeStatus(id, status);
 			setBooks(newBooks);
-			toast(`The book has been added to '${status}'.`);
+			toast.success(`The book has been added to '${status}'.`);
 		} catch {
 			toast.error("Failed to update book status. Please try again.");
 		}

@@ -67,7 +67,7 @@ export default function Signup() {
 				values.username,
 				values.password
 			);
-			toast("Account created successfully. You may now log in.");
+			toast.success("Account created successfully. You may now log in.");
 			navigate("/login");
 		} catch (err) {
 			let message = "An unexpected error occurred, try again later.";
