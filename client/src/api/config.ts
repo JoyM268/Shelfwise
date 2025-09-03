@@ -35,17 +35,39 @@ axiosInstance.interceptors.request.use(async (req) => {
 		return req;
 	}
 
-	const response = await axios.post(`${baseURL}/api/token/refresh/`, {
-		refresh: authTokens.refresh,
-	});
+	try {
+		const response = await axios.post(`${baseURL}/api/token/refresh/`, {
+			refresh: authTokens.refresh,
+		});
 
-	const newAuthTokens = { ...authTokens, access: response.data.access };
+		const newAuthTokens = { ...authTokens, access: response.data.access };
 
-	localStorage.setItem("authTokens", JSON.stringify(newAuthTokens));
+		localStorage.setItem("authTokens", JSON.stringify(newAuthTokens));
 
-	req.headers.Authorization = `Bearer ${response.data.access}`;
+		req.headers.Authorization = `Bearer ${response.data.access}`;
 
-	return req;
+		return req;
+	} catch (error) {
+		localStorage.removeItem("authTokens");
+		req.headers.Authorization = null;
+		if (window.location.pathname !== "/login") {
+			window.location.href = "/login";
+		}
+		return Promise.reject(error);
+	}
 });
+
+axiosInstance.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error.response?.status === 401) {
+			localStorage.removeItem("authTokens");
+			if (window.location.pathname !== "/login") {
+				window.location.href = "/login";
+			}
+		}
+		return Promise.reject(error);
+	}
+);
 
 export default axiosInstance;
