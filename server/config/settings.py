@@ -163,5 +163,5 @@ AUTH_USER_MODEL = 'user.User'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1), 
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7), 
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=365 * 100), 
 }

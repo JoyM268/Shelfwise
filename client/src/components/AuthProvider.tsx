@@ -3,7 +3,6 @@ import { useState } from "react";
 import type { AuthTokens, DecodedUser } from "@/types";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
-import dayjs from "dayjs";
 
 export default function AuthProvider({
 	children,
@@ -15,16 +14,6 @@ export default function AuthProvider({
 		if (storedToken) {
 			try {
 				const parsedTokens = JSON.parse(storedToken);
-				const decoded = jwtDecode(parsedTokens.access);
-				const isExpired = decoded.exp
-					? dayjs.unix(decoded.exp).diff(dayjs()) < 1
-					: true;
-
-				if (isExpired) {
-					localStorage.removeItem("authTokens");
-					return null;
-				}
-
 				return parsedTokens;
 			} catch {
 				localStorage.removeItem("authTokens");
