@@ -40,7 +40,7 @@ axiosInstance.interceptors.request.use(async (req) => {
 			refresh: authTokens.refresh,
 		});
 
-		const newAuthTokens = { ...authTokens, access: response.data.access };
+		const newAuthTokens = response.data;
 
 		localStorage.setItem("authTokens", JSON.stringify(newAuthTokens));
 
