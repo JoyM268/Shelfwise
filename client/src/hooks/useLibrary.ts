@@ -55,6 +55,14 @@ export default function useLibrary() {
 					return {
 						...book,
 						status,
+						progress:
+							status === "Plan to Read"
+								? 0
+								: status === "Finished"
+								? book.total
+								: book.total === book.progress
+								? 0
+								: book.progress,
 					};
 				}
 				return book;

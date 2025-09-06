@@ -85,6 +85,8 @@ export interface RadioDialogProps {
 	options?: string[];
 	title: string;
 	description: string;
+	setProgress: React.Dispatch<React.SetStateAction<number>>;
+	setInputValue: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface SearchCarouselProps {

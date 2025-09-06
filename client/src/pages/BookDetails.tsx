@@ -155,6 +155,8 @@ export default function BookDetails() {
 												: "Add to Library"
 										}
 										description="Choose the status of the book"
+										setProgress={setProgress}
+										setInputValue={setInputValue}
 									>
 										<Button classname="bg-blue-500 text-white mt-5 md:mt-3 hover:bg-blue-500/90 text-sm">
 											{status

@@ -22,6 +22,8 @@ export function RadioDialog({
 	children,
 	title,
 	description,
+	setProgress,
+	setInputValue,
 }: RadioDialogProps) {
 	const [open, setOpen] = useState(false);
 	const { bookId } = useParams();
@@ -33,6 +35,14 @@ export function RadioDialog({
 					await library.addBook(bookId, newOption as BookStatus);
 				} else {
 					await library.changeStatus(bookId, newOption as BookStatus);
+				}
+
+				if (
+					(value === "Finished" || value === "Plan to Read") &&
+					newOption === "Reading"
+				) {
+					setProgress(0);
+					setInputValue(0);
 				}
 
 				if (value !== newOption) {
